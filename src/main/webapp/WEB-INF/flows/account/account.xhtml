@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+
+	<ui:define name="content">
+		<h:form id="compteForm">
+			<p:fieldset styleClass="fieldset" legend="Les comptes">
+				<p:growl id="msg" showDetail="true"/>
+
+
+				<h:panelGrid id="comptePanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+
+					<p:outputLabel for="profil" value="Le profil: " />
+					<p:selectOneMenu id="profil" value="#{acc.profil.idProfil}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{profils}" var="p" itemLabel="#{p.libelle}"
+							itemValue="#{p.idProfil}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+					
+					<p:outputLabel for="user" value="L'utilisateur: " />
+					<p:selectOneMenu id="user" value="#{acc.user.idUser}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{users}" var="u" itemLabel="#{u.nom}"
+							itemValue="#{u.idUser}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+					
+					
+					<h:panelGroup>
+						<h:outputText value="Login: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="login" value="#{acc.login}"
+						required="true" label="Login" title="Entrez votre login!" />
+					<p:tooltip for="login" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+						
+						<h:panelGroup>
+						<h:outputText value="Mot de passe: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="pass" value="#{en.intitule}"
+						required="true" label="Mot de passe" title="Entrez votre mot de passe!" />
+					<p:tooltip for="pass" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+					
+					
+					<p:commandButton id="submitButton" action="accountcreate"
+						update=":dataA:dataFullA,comptePanelGrid,msg,compteForm"
+						icon="ui-icon-check" value="Enregistrer" />
+						
+						<p:commandButton id="backHome" action="backHome" immediate="true"
+						icon="ui-icon-home" value="Accueil" />
+
+
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+
+		<h:form id="dataA">
+			<p:growl id="message" showDetail="true" />
+
+			<p:dataTable var="m" value="#{accounts}" id="dataFullA"
+				paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" editable="true"
+				style="margin-bottom:20px">
+
+				<p:ajax event="rowEdit" listener="#{accountService.onRowEdit}"
+					update=":dataA:message" />
+				<p:ajax event="rowEditCancel"
+					listener="#{accountService.onRowCancel}" update=":dataA:message" />
+
+
+				<p:column headerText="Id" filterBy="#{m.idAccount}"
+					filterMatchMode="exact">
+					<h:outputText value="#{m.idAccount}" />
+				</p:column>
+				
+
+				<p:column headerText="Profil" filterBy="#{m.profil.libelle}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{m.profil.libelle}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{m.profil.idProfil}"
+								style="width:100%">
+								<f:selectItems value="#{profils}" var="p"
+									itemLabel="#{p.libelle}" itemValue="#{p.idProfil}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+				
+				
+				<p:column headerText="Utilisateur" filterBy="#{m.user.nom}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{m.user.nom}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{m.user.idUser}"
+								style="width:100%">
+								<f:selectItems value="#{users}" var="u"
+									itemLabel="#{u.nom}" itemValue="#{u.idUser}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Login" filterBy="#{m.login}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{m.login}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{m.login}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<!-- ceci juste pour la démonstration, si non on le retire , sinon on opte pour
+				les inputSecret -->
+				<p:column headerText="Login" filterBy="#{m.pw}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{m.pw}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{m.pw}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:40px;" headerText="Modifier">
+					<p:rowEditor />
+				</p:column>
+				
+				 <p:column style="width:40px;" headerText="Supprimer">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{accountService.delete(m)}" action="deleteAccount" update=":dataA:message,:dataA:dataFullA">
+ 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
+ 		
+ 		</p:commandButton>
+ </p:column>
+ </p:dataTable>
+ 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":dataA:message,:dataA:dataFullA"/>
+		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		
+	</p:confirmDialog> 
+				
+		
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="pecheMaritime">
+		<class>ma.siig.domain.Account</class>
+		<class>ma.siig.domain.Consultation</class>
+		<class>ma.siig.domain.Destination</class>
+		<class>ma.siig.domain.Document</class>
+		<class>ma.siig.domain.Element</class>
+		<class>ma.siig.domain.Entite</class>
+		<class>ma.siig.domain.Fonction</class>
+		<class>ma.siig.domain.Membreequipe</class>
+		<class>ma.siig.domain.Mission</class>
+		<class>ma.siig.domain.Missionpj</class>
+		<class>ma.siig.domain.Module</class>
+		<class>ma.siig.domain.Profil</class>
+		<class>ma.siig.domain.Soustypedoc</class>
+		<class>ma.siig.domain.Typedoc</class>
+		<class>ma.siig.domain.Typemission</class>
+		<class>ma.siig.domain.Typepj</class>
+		<class>ma.siig.domain.User</class>
+		<class>ma.siig.domain.Ville</class>
+		<class>ma.siig.domain.Privilege</class>
+		<class>ma.siig.domain.PrivilegePK</class>
+	</persistence-unit>
+</persistence>

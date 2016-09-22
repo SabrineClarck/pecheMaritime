@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+
+	<ui:define name="content">
+		<h:form id="consultationForm">
+			<p:fieldset styleClass="fieldset" legend="Consultations">
+				<p:growl id="msg" showDetail="true"/>
+
+
+				<h:panelGrid id="consultationPanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+
+
+					<p:outputLabel for="user" value="L'utilisateur: " />
+					<p:selectOneMenu id="user" value="#{cons.user.idUser}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{users}" var="en" itemLabel="#{en.nom}"
+							itemValue="#{en.idUser}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+					
+					<p:outputLabel for="doc" value="La document: " />
+					<p:selectOneMenu id="doc" value="#{cons.document.idDoc}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{docs}" var="vi" itemLabel="#{vi.titre}"
+							itemValue="#{vi.idDoc}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+					
+
+					<h:panelGroup>
+						<h:outputText value="Date de Consultation: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:calendar id="desc" pattern="yyyy-MM-dd" effect="fold" value="#{cons.dateConsultation}"/>
+					<p:tooltip for="desc" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+					
+					
+					<p:commandButton id="submitButton" action="consultationcreate"
+						update=":dataC:dataFullC,consultationPanelGrid,msg,consultationForm"
+						icon="ui-icon-check" value="Enregistrer" />
+						
+						<p:commandButton id="backHome" action="backHome" immediate="true"
+						icon="ui-icon-home" value="Accueil" />
+
+
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+
+		<h:form id="dataC">
+			<p:growl id="message" showDetail="true" />
+
+			<p:dataTable var="c" value="#{consultations}" id="dataFullC"
+				paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" editable="true"
+				style="margin-bottom:20px">
+
+				<p:ajax event="rowEdit" listener="#{consultationService.onRowEdit}"
+					update=":dataC:message" />
+				<p:ajax event="rowEditCancel"
+					listener="#{consultationService.onRowCancel}" update=":dataC:message" />
+
+
+				<p:column headerText="Id" filterBy="#{c.idConsultation}"
+					filterMatchMode="exact">
+					<h:outputText value="#{c.idConsultation}" />
+				</p:column>
+				
+
+				<p:column headerText="Utilisateur" filterBy="#{c.user.nom}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{c.user.nom}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{c.user.idUser}"
+								style="width:100%">
+								<f:selectItems value="#{users}" var="u"
+									itemLabel="#{u.nom}" itemValue="#{u.idUser}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Document" filterBy="#{c.document.titre}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{c.document.titre}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{c.document.idDoc}"
+								style="width:100%">
+								<f:selectItems value="#{docs}" var="d"
+									itemLabel="#{d.titre}" itemValue="#{d.idDoc}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Date de consultation" filterBy="#{c.dateConsultation}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{c.dateConsultation}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:calendar value="{c.dateConsultation}" pattern="yyyy-MM-dd" effect="fold"/>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:40px;" headerText="Modifier">
+					<p:rowEditor />
+				</p:column>
+				
+				 <p:column style="width:40px;" headerText="Supprimer">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{consultationService.delete(c)}" action="deleteConsultation" update=":dataC:message,:dataC:dataFullC">
+ 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
+ 		
+ 		</p:commandButton>
+ </p:column>
+ </p:dataTable>
+ 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":dataC:message,:dataC:dataFullC"/>
+		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		
+	</p:confirmDialog> 
+				
+			
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

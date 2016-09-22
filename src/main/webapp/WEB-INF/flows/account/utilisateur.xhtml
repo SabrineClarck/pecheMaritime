@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+
+
+	</ui:define>
+
+		
+<ui:define name="content">
+		<h:form id="utilisateurForm">
+			<p:fieldset styleClass="fieldset" legend="Les utilisateurs">
+				<p:growl id="msg" showDetail="true" life="70"/>
+
+
+				<h:panelGrid id="utilisateurPanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+				
+
+					<h:panelGroup>
+						<h:outputText value="PPR: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="ppr" value="#{us.ppr}" required="true"
+						label="ppr" title="Entrez le PPR!" />
+					<p:tooltip for="ppr" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+
+					<h:panelGroup>
+						<h:outputText value="CIN: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="cin" value="#{us.cin}" required="true"
+						label="cin" title="Entrez le CIN!" />
+					<p:tooltip for="cin" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+						
+						<h:panelGroup>
+						<h:outputText value="Nom: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="nom" value="#{us.nom}" required="true"
+						label="ppr" title="Entrez le nom d'utilisateur!" />
+					<p:tooltip for="nom" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+						
+						<h:panelGroup>
+						<h:outputText value="Prénom: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="prenom" value="#{us.prenom}" required="true"
+						label="ppr" title="Entrez le prénom d'utilisateur!" />
+					<p:tooltip for="prenom" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+					
+					<p:commandButton id="submitButton" action="usercreate"
+						update=":dataU:dataFullU,utilisateurPanelGrid,msg" icon="ui-icon-check"
+						value="Enregistrer"/>
+					<p:commandButton id="backHome" action="backHome" immediate="true"
+					 icon="ui-icon-home"
+						value="Accueil"/>		
+
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+		
+		<h:form id="dataU">
+		<p:growl id="message" showDetail="true" />
+		<p:dataTable var="me" value="#{users}" id="dataFullU" paginator="true" rows="10" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+		rowsPerPageTemplate="5,10,15" editable="true" style="margin-bottom:20px">
+	
+	
+	<p:ajax event="rowEdit" listener="#{utilisateurService.onRowEdit}" update=":dataU:message"/>
+		<p:ajax event="rowEditCancel" listener="#{utilisateurService.onRowCancel}" update=":dataU:message"/>
+	
+	
+   	 <p:column headerText="Id" filterBy="#{me.idUser}" filterMatchMode="exact">
+        <h:outputText value="#{me.idUser}" />
+    </p:column>
+ 
+    <p:column headerText="PPR" filterBy="#{me.ppr}" filterMatchMode="exact">
+    	<p:cellEditor>
+    	   	 <f:facet name="output"><h:outputText value="#{me.ppr}" /></f:facet>
+    	   	 <f:facet name="input"> <p:inputText value="#{me.ppr}" /> </f:facet>
+    	   	 
+    	</p:cellEditor>
+    </p:column>
+    
+     <p:column headerText="CIN" filterBy="#{me.cin}" filterMatchMode="contains">
+     		 <p:cellEditor>
+       			<f:facet name="output">	 <h:outputText value="#{me.cin}" /></f:facet>
+           	 <f:facet name="input"> <p:inputText value="#{me.cin}" /> </f:facet>    			
+       		</p:cellEditor>
+    </p:column>
+ 
+ 	 <p:column headerText="Prénom" filterBy="#{me.prenom}" filterMatchMode="contains">
+        <p:cellEditor>
+       			<f:facet name="output">	 <h:outputText value="#{me.prenom}" /></f:facet>
+           	 <f:facet name="input"> <p:inputText value="#{me.prenom}" /> </f:facet>    			
+       		</p:cellEditor>
+    </p:column>
+    
+     <p:column headerText="Nom" filterBy="#{me.nom}" filterMatchMode="contains">
+       <p:cellEditor>
+       			<f:facet name="output">	 <h:outputText value="#{me.nom}" /></f:facet>
+           	 <f:facet name="input"> <p:inputText value="#{me.nom}" /> </f:facet>    			
+       		</p:cellEditor>
+    </p:column>
+  <p:column style="width:40px" headerText="Modifier">
+    	<p:rowEditor />
+    </p:column>
+ <p:column style="width:40px;" headerText="Supprimer">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{utilisateurService.delete(me)}" action="deleteUser" update=":dataU:message,:dataU:dataFullU">
+ 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
+ 		
+ 		</p:commandButton>
+ </p:column>
+ 
+</p:dataTable>
+ 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":dataU:message,:dataU:dataFullU"/>
+		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		
+	</p:confirmDialog> 
+
+</h:form>
+	</ui:define>
+
+</ui:composition>

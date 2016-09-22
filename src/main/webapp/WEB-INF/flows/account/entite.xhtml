@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+
+	<ui:define name="content">
+		<h:form id="entiteForm">
+			<p:fieldset styleClass="fieldset" legend="Les entités">
+				<p:growl id="msg" showDetail="true"/>
+
+
+				<h:panelGrid id="entitePanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+
+
+					<h:panelGroup>
+						<h:outputText value="L'entité: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="entiteVille" value="#{en.intitule}"
+						required="true" label="Intitulé ville" title="Entrez une entité!" />
+					<p:tooltip for="entiteVille" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+
+					<p:outputLabel for="ville" value="La Ville: " />
+					<p:selectOneMenu id="ville" value="#{en.ville.idVille}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{villes}" var="c" itemLabel="#{c.intitule}"
+							itemValue="#{c.idVille}" style="text-align:left;width:150px;" />
+					<!--  	<f:converter converterId="ma.siig.ui.utils.VilleConverter"/> -->
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+					<p:commandButton id="submitButton" action="entitecreate"
+						update=":dataE:dataFullE,entitePanelGrid,msg,entiteForm"
+						icon="ui-icon-check" value="Enregistrer" />
+						
+						<p:commandButton id="backHome" action="backHome" immediate="true"
+						icon="ui-icon-home" value="Accueil" />
+
+
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+
+		<h:form id="dataE">
+			<p:growl id="message" showDetail="true" />
+
+			<p:dataTable var="t" value="#{entites}" id="dataFullE"
+				paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" editable="true" emptyMessage="Aucun enregistrement trouvé" initMode="immediate"
+				style="margin-bottom:20px">
+
+				<p:ajax event="rowEdit" listener="#{entiteService.onRowEdit}"
+					update=":dataE:message,:dataE:dataFullE" immediate="true" />
+				<p:ajax event="rowEditCancel"
+					listener="#{entiteService.onRowCancel}" update=":dataE:message" />
+
+
+				<p:column headerText="Id" filterBy="#{t.idEntite}"
+					filterMatchMode="exact">
+					<h:outputText value="#{t.idEntite}" />
+				</p:column>
+				<!--  ici dans les lignes apparaissent les noms de villes et dans la barre de recherche on recherche par l'intitule , on peut le changer pour qu'il puisse
+ faire la recherche par l'id de ville-->
+
+				<p:column headerText="Ville" filterBy="#{t.ville.intitule}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{t.ville.intitule}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{t.ville.idVille}"
+								style="width:100%">
+								<f:selectItems value="#{villes}" var="c"
+									itemLabel="#{c.intitule}" itemValue="#{c.idVille}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Entité" filterBy="#{t.intitule}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{t.intitule}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{t.intitule}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:40px;" headerText="Modifier">
+					<p:rowEditor />
+				</p:column>
+				
+				 <p:column style="width:40px;" headerText="Supprimer">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{entiteService.delete(t)}" action="deleteEntite" update=":dataE:message,:dataE:dataFullE" immediate="true">
+ 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
+ 		
+ 		</p:commandButton>
+ </p:column>
+ </p:dataTable>
+ 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":dataE:message,:dataE:dataFullE"/>
+		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		
+	</p:confirmDialog> 
+				
+			
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

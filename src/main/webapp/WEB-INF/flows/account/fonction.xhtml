@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+
+	<ui:define name="content">
+		<h:form id="fonctionForm">
+			<p:fieldset styleClass="fieldset" legend="Les fonctions">
+				<p:growl id="msg" showDetail="true"/>
+
+
+				<h:panelGrid id="fonctionPanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+
+
+					<h:panelGroup>
+						<h:outputText value="Libellé: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="lib" value="#{fo.libelle}"
+						required="true" label="Libéllé" title="Entrez une libellé!" />
+					<p:tooltip for="lib" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+
+					<p:outputLabel for="mod" value="L'élément: " />
+					<p:selectOneMenu id="mod" value="#{fo.element.idElement}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{elements}" var="m" itemLabel="#{m.libelle}"
+							itemValue="#{m.idElement}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					
+					<h:panelGroup>
+						<h:outputText value="Code: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="code" value="#{fo.code}"
+						required="true" label="Code" title="Entrez un code!" />
+					<p:tooltip for="code" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+					
+					
+					<h:outputText value=""/>
+					<p:commandButton id="submitButton" action="fonctioncreate"
+						update=":dataF:dataFullF,fonctionPanelGrid,msg,fonctionForm"
+						icon="ui-icon-check" value="Enregistrer" />
+						
+						<p:commandButton id="backHome" action="backHome" immediate="true"
+						icon="ui-icon-home" value="Accueil" />
+
+
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+
+		<h:form id="dataF">
+			<p:growl id="message" showDetail="true" />
+
+			<p:dataTable var="f" value="#{fonctions}" id="dataFullF"
+				paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" editable="true"
+				style="margin-bottom:20px">
+
+				<p:ajax event="rowEdit" listener="#{fonctionService.onRowEdit}"
+					update=":dataF:message" />
+				<p:ajax event="rowEditCancel"
+					listener="#{fonctionService.onRowCancel}" update=":dataF:message" />
+
+
+				<p:column headerText="Id" filterBy="#{f.idFonction}"
+					filterMatchMode="exact">
+					<h:outputText value="#{f.idFonction}" />
+				</p:column>
+				
+<p:column headerText="Libellé" filterBy="#{f.libelle}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{f.libelle}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{f.libelle}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Elément" filterBy="#{f.element.libelle}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{f.element.libelle}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{f.element.idElement}"
+								style="width:100%">
+								<f:selectItems value="#{elements}" var="m"
+									itemLabel="#{m.libelle}" itemValue="#{m.idElement}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Code" filterBy="#{f.code}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{f.code}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{f.code}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:40px;" headerText="Modifier">
+					<p:rowEditor />
+				</p:column>
+				
+				 <p:column style="width:40px;" headerText="Supprimer">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{fonctionService.delete(f)}" action="deleteFonction" update=":dataF:message">
+ 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
+ 		
+ 		</p:commandButton>
+ </p:column>
+ </p:dataTable>
+ 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":dataF:message"/>
+		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		
+	</p:confirmDialog> 
+				
+			
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

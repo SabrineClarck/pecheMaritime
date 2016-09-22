@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="pecheMaritime" transaction-type="RESOURCE_LOCAL">
+		<class>ma.siig.domain.User</class>
+		<class>ma.siig.domain.Entite</class>
+		<class>ma.siig.domain.Account</class>
+		<class>ma.siig.domain.Consultation</class>
+		<class>ma.siig.domain.Destination</class>
+		<class>ma.siig.domain.Document</class>
+		<class>ma.siig.domain.Membreequipe</class>
+		<class>ma.siig.domain.Mission</class>
+		<class>ma.siig.domain.Missionpj</class>
+		<class>ma.siig.domain.Profil</class>
+		<class>ma.siig.domain.Soustypedoc</class>
+		<class>ma.siig.domain.Typedoc</class>
+		<class>ma.siig.domain.Typemission</class>
+		<class>ma.siig.domain.Typepj</class>
+		<class>ma.siig.domain.Ville</class>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:8889/siig"/>
+			<property name="hibernate.connection.username" value="root"/>
+			<property name="hibernate.connection.password" value="root"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:8889/siig"/>
+			<property name="javax.persistence.jdbc.user" value="root"/>
+			<property name="javax.persistence.jdbc.password" value="root"/>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
+			<property name="hibernate.enable_lazy_load_no_trans" value="true"/>
+			
+		</properties>
+	</persistence-unit>
+</persistence>

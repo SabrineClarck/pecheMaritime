@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+
+	<ui:define name="content">
+		<h:form id="membreForm">
+			<p:fieldset styleClass="fieldset" legend="Les membres">
+				<p:growl id="msg" showDetail="true"/>
+
+
+				<h:panelGrid id="membrePanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+
+					<p:outputLabel for="user" value="L'utilisateur: " />
+					<p:selectOneMenu id="user" value="#{mem.user.idUser}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{users}" var="u" itemLabel="#{u.nom}"
+							itemValue="#{u.idUser}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+					
+					<p:outputLabel for="mission" value="La mission: " />
+					<p:selectOneMenu id="mission" value="#{mem.mission.idMission}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{missions}" var="m" itemLabel="#{m.titre}"
+							itemValue="#{m.idMission}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+					
+					
+					<h:panelGroup>
+						<h:outputText value="Fonction: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="fonction" value="#{mem.fonction}"
+						required="true" label="Fonction" title="Entrez la fonction!" />
+					<p:tooltip for="fonction" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+						
+					
+					<p:commandButton id="submitButton" action="membrecreate"
+						update=":datam:dataFullM,membrePanelGrid,msg,membreForm"
+						icon="ui-icon-check" value="Enregistrer" />
+						
+						<p:commandButton id="backHome" action="backHome" immediate="true"
+						icon="ui-icon-home" value="Accueil" />
+
+
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+
+		<h:form id="dataM">
+			<p:growl id="message" showDetail="true" />
+
+			<p:dataTable var="m" value="#{membres}" id="dataFullM"
+				paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" editable="true"
+				style="margin-bottom:20px">
+
+				<p:ajax event="rowEdit" listener="#{membreService.onRowEdit}"
+					update=":dataM:message" />
+				<p:ajax event="rowEditCancel"
+					listener="#{membreService.onRowCancel}" update=":dataM:message" />
+
+
+				<p:column headerText="Id" filterBy="#{m.idMe}"
+					filterMatchMode="exact">
+					<h:outputText value="#{m.idMe}" />
+				</p:column>
+				
+
+				<p:column headerText="Profil" filterBy="#{m.user.nom}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{m.user.nom}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{m.user.idUser}"
+								style="width:100%">
+								<f:selectItems value="#{users}" var="p"
+									itemLabel="#{p.nom}" itemValue="#{p.idUser}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+				
+				
+				<p:column headerText="Mission" filterBy="#{m.mission.titre}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{m.mission.titre}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{m.mission.idMission}"
+								style="width:100%">
+								<f:selectItems value="#{missions}" var="u"
+									itemLabel="#{u.titre}" itemValue="#{u.idMission}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Fonction" filterBy="#{m.fonction}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{m.fonction}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{m.fonction}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column style="width:40px;" headerText="Modifier">
+					<p:rowEditor />
+				</p:column>
+				
+				 <p:column style="width:40px;" headerText="Supprimer">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{membreService.delete(m)}" action="deleteMembre" update=":dataM:message,:dataM:dataFullM">
+ 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
+ 		
+ 		</p:commandButton>
+ </p:column>
+ </p:dataTable>
+ 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":dataM:message,:dataM:dataFullM"/>
+		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		
+	</p:confirmDialog> 
+			
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

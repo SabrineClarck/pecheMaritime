@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+
+	<ui:define name="content">
+		<h:form id="documentForm" enctype="multipart/form-data">
+			<p:fieldset styleClass="fieldset" legend="Les documents">
+				
+					<p:growl id="msg" showDetail="true" />
+
+
+				<h:panelGrid id="docPanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+
+
+					<h:panelGroup>
+						<h:outputText value="Titre du document:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="titre" value="#{documentService.document.titre}" required="true"
+						label="titre" title="Entrez le titre du document!" />
+					<p:tooltip for="titre" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+
+					<p:outputLabel for="soustypedoc" value="Le type de document: " />
+					<p:selectOneMenu id="soustypedoc" value="#{documentService.soustypedoc.idSousType}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{typesdoc}" var="c"
+							itemLabel="#{c.libelle}" itemValue="#{c.idSousType}"
+							style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+
+					<h:outputText value="" />
+
+
+					<p:outputLabel for="effect" value="La date d'ajout: " />
+					<p:calendar id="effect" pattern="yyyy-MM-dd" styleClass="dateC" value="#{documentService.document.dateAjout}"
+						effect="fold" title="Appuyer sur le champ!" />
+					<p:tooltip for="effect" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+
+					<h:panelGroup>
+						<h:outputText value="Description: " />
+						<h:outputText style="color:red" value="  " />
+					</h:panelGroup>
+					<p:inputText id="desc" value="#{documentService.document.description}" required="true"
+						label="description" title="Entrez une description!" />
+					<p:tooltip for="desc" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+
+					<!-- the file upload   -->
+					<p:fileUpload value="#{documentService.file}" mode="simple" skinSimple="true"/>
+				
+					<h:outputText value="" />
+				
+					<h:outputText value="" />
+				
+
+					<p:commandButton ajax="false" actionListener="#{documentService.upload()}" action="docreate"
+						update="docPanelGrid,msg" icon="ui-icon-check"
+						value="Enregistrer" />
+
+					<p:commandButton id="backHome"
+						 icon="ui-icon-home" action="backHome" immediate="true"
+						value="Accueil" />
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+
+		<h:form id="dataD">
+			<p:growl id="message" showDetail="true" />
+
+			<p:dataTable var="dom" value="#{documents}" id="dataFullD"
+				paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" editable="true"
+				style="margin-bottom:20px">
+
+				<p:ajax event="rowEdit" listener="#{documentService.onRowEdit}"
+					update=":dataD:message" />
+				<p:ajax event="rowEditCancel"
+					listener="#{documentService.onRowCancel}" update=":dataD:message" />
+
+
+				<p:column headerText="Id" filterBy="#{dom.idDoc}"
+					filterMatchMode="exact">
+					<h:outputText value="#{dom.idDoc}" />
+				</p:column>
+
+
+				<p:column headerText="Type" filterBy="#{dom.soustypedoc.libelle}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{dom.soustypedoc.libelle}" />
+						</f:facet>
+						<f:facet name="input">
+							<h:selectOneMenu value="#{dom.soustypedoc.idSousType}"
+								style="width:100%">
+								<f:selectItems value="#{typesdoc}" var="c" itemLabel="#{c.libelle}"
+									itemValue="#{c.idSousType}" />
+							</h:selectOneMenu>
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Titre" filterBy="#{dom.titre}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{dom.titre}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{dom.titre}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Date d'ajout" filterBy="#{dom.dateAjout}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{dom.dateAjout}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{dom.dateAjout}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+
+				<p:column headerText="Document">
+					<p:commandButton value="Télécharger" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop);"
+					icon="ui-icon-arrowthick-1-s">
+						<p:fileDownload value="#{documentService.fileDownload(dom.idDoc)}"/>
+					</p:commandButton>
+				</p:column>
+
+
+
+				<p:column style="width:40px;" headerText="Modifier">
+					<p:rowEditor />
+				</p:column>
+
+				<p:column style="width:40px;" headerText="Supprimer">
+					<p:commandButton icon="ui-icon-trash"
+						actionListener="#{documentService.delete(dom)}"
+						action="deleteDocument" update=":dataD:message">
+						<p:confirm header="Confirmation" message="Etes vous sûr?"
+							icon="ui-icon-alert" />
+
+					</p:commandButton>
+				</p:column>
+</p:dataTable>
+				<p:confirmDialog global="true" showEffect="explode"
+					hideEffect="explode">
+					<p:commandButton value="Oui" type="button"
+						styleClass="ui-confirmdialog-yes" icon="ui-icon-check"
+						update=":dataD:message,:dataD:dataFullD" />
+					<p:commandButton value="Non" type="button"
+						styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+
+				</p:confirmDialog>
+
+			
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

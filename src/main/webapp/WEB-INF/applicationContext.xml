@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<import resource="datasource-config.xml" />
+	<import resource="webflow-config.xml" />	
+	<!--   <import resource="security-config.xml" /> -->
+	
+	<!-- DAO declarations -->
+	
+	<!--  --><!--   <bean id="userDao" class="ma.siig.dao.UserJpaDao"/> -->
+	<bean id="membreDao" class="ma.siig.daoImpl.MembreEDaoImpl" />
+	<bean id="fonctionDao" class="ma.siig.daoImpl.FonctionDaoImpl" />
+	<bean id="moduleDao" class="ma.siig.daoImpl.ModuleDaoImpl" />
+	<bean id="missionpjDao" class="ma.siig.daoImpl.MissionpjDaoImpl" />
+	<bean id="entiteDao" class="ma.siig.daoImpl.EntiteDaoImpl" />
+	<bean id="accountDao" class="ma.siig.daoImpl.AccountDaoImpl" />
+	<bean id="documentDao" class="ma.siig.daoImpl.DocumentDaoImpl" />
+	<bean id="consultationDao" class="ma.siig.daoImpl.ConsultationDaoImpl" />
+	<bean id="destinationDao" class="ma.siig.daoImpl.DestinationDaoImpl" />
+	<bean id="missionDao" class="ma.siig.daoImpl.MissionDaoImpl" />
+	<bean id="profilDao" class="ma.siig.daoImpl.ProfilDaoImpl" />
+	<bean id="soustypedocDao" class="ma.siig.daoImpl.SoustypedocDaoImpl" />
+	<bean id="typedocDao" class="ma.siig.daoImpl.TypedocDaoImpl" />
+	<bean id="typemissionDao" class="ma.siig.daoImpl.TypemissionDaoImpl" />
+	<bean id="typepjDao" class="ma.siig.daoImpl.TypepjDaoImpl" />
+	<bean id="villeDao" class="ma.siig.daoImpl.VilleDaoImpl" />
+	<bean id="utilisateurDao" class="ma.siig.daoImpl.UtilisateurDaoImpl"/>
+<!--   <bean id="entiteConverterBean" class="ma.siig.ui.utils.EntiteConverter"/>  -->
+	
+	<!--  Services declarations , for injections by spring-->
+	
+	<!-- <bean id="userService" class="ma.siig.services.Impl.UserServiceImpl">
+		<property name="userDao" ref="userDao"/>
+	</bean>  -->
+	
+	<bean id="membreService" class="ma.siig.services.Impl.MembreServiceImpl">
+		<property name="membreDao" ref="membreDao"/>
+	</bean>
+	
+	<bean id="fonctionService" class="ma.siig.services.Impl.FonctionServiceImpl">
+		<property name="fonctionDao" ref="fonctionDao"/>
+	</bean>
+	
+	<bean id="moduleService" class="ma.siig.services.Impl.ModuleServiceImpl">
+		<property name="moduleDao" ref="moduleDao"/>
+	</bean>
+	
+	<bean id="missionpjService" class="ma.siig.services.Impl.MissionpjServiceImpl">
+		<property name="missionpjDao" ref="missionpjDao"/>
+	</bean>
+	
+	<bean id="entiteService" class="ma.siig.services.Impl.EntiteServiceImpl">
+		<property name="entiteDao" ref="entiteDao"/>
+	</bean>
+	
+	<bean id="accountService" class="ma.siig.services.Impl.AccountServiceImpl">
+		<property name="accountDao" ref="accountDao"/>
+	</bean>
+	
+	<bean id="documentService" class="ma.siig.services.Impl.DocumentServiceImpl">
+		<property name="documentDao" ref="documentDao"/>
+	</bean>
+	
+	<bean id="consultationService" class="ma.siig.services.Impl.ConsultationServiceImpl">
+		<property name="consultationDao" ref="consultationDao"/>
+	</bean>
+	
+	<bean id="destinationService" class="ma.siig.services.Impl.DestinationServiceImpl">
+		<property name="destinationDao" ref="destinationDao"/>
+	</bean>
+	
+	<bean id="missionService" class="ma.siig.services.Impl.MissionServiceImpl">
+		<property name="missionDao" ref="missionDao"/>
+	</bean>
+	
+	<bean id="profilService" class="ma.siig.services.Impl.ProfilServiceImpl">
+		<property name="profilDao" ref="profilDao"/>
+	</bean>
+	
+	<bean id="soustypedocService" class="ma.siig.services.Impl.SoustypedocServiceImpl">
+		<property name="soustypedocDao" ref="soustypedocDao"/>
+	</bean>
+	
+  <bean id="typedocService" class="ma.siig.services.Impl.TypedocServiceImpl">
+		<property name="typedocDao" ref="typedocDao"/>
+	</bean>
+	
+	<bean id="typemissionService" class="ma.siig.services.Impl.TypemissionServiceImpl">
+		<property name="typemissionDao" ref="typemissionDao"/>
+	</bean>
+	
+	<bean id="typepjService" class="ma.siig.services.Impl.TypepjServiceImpl">
+		<property name="typepjDao" ref="typepjDao"/>
+	</bean>
+	
+	<bean id="villeService" class="ma.siig.services.Impl.VilleServiceImpl">
+		<property name="villeDao" ref="villeDao"/>
+	</bean>
+	
+	<bean id="utilisateurService" class="ma.siig.services.Impl.UtilisateurServiceImpl">
+		<property name="utilisateurDao" ref="utilisateurDao"/>
+	</bean>  
+	
+	<!--       for the spring security configurating   -->
+	<!--  <bean id="userAuthenticationProviderService" class="ma.siig.services.Impl.UserAuthenticationProviderServiceImpl">
+		<property name="authenticationManager" ref="authenticationManager"/>
+	</bean> -->
+	
+	
+</beans>

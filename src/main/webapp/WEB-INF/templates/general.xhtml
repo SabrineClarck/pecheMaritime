@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<f:view contentType="text/html">
+
+	<h:head>
+		<meta http-equiv="Content-Type" content="text/html; chartset=utf-8" />
+		<title><ui:insert name="title" /></title>
+		<link rel="stylesheet" type="text/css"
+			href="${request.contextPath}/resources/css/style.css" />
+		<link rel="shortcut icon"
+			href="${request.contextPath}/resources/css/images/1_fish.ico" />
+	</h:head>
+
+	<h:body>
+		<p:ajaxStatus onstart="statusDialog.show();"
+			onsuccess="statusDialog.hide();" />
+		<p:dialog modal="true" widgetVar="statusDialog"
+			header="En cours de traitement..." draggable="true" closable="false">
+			<p:graphicImage value="/css/images/ajaxloadingbar.gif" />
+		</p:dialog>
+		<p:growl id="growlMessages" showDetail="false" sticky="false"
+			life="13000" />
+
+
+		<div id="container">
+	<!--  		<div id="greeting">
+				 the field currentUser is a spring security component -->
+				<c:if test="${not empty currentUser.name}">
+					<b>Welcome,</b>  |
+						<a href="${request.contextPath}/app/logout"> <img
+						src="${request.contextPath}/resources/css/images/logout.png"
+						alt="" title="Logout" /> </a>
+
+				</c:if>
+			
+
+			<div id="header">
+				<h1>
+					<ui:insert name="header" />
+				</h1>
+			</div>
+
+			<div id="line" />
+			
+				<div id="content">
+					
+					
+					<div id="bar">
+					<h:form id="menubar">
+						<p:growl autoUpdate="true" />
+
+						<p:panelMenu style="width:300px">
+							<p:submenu label="Administration">
+								<p:menuitem value="Ville" icon="ui-icon-gear"
+									 action="villego"/>
+								<p:menuitem value="Entite" icon="ui-icon-gear"
+									action="entitego" />
+								<p:menuitem value="Utilisateur" icon="ui-icon-gear"
+									action="utilisateurgo" />
+								<p:menuitem value="Destination" icon="ui-icon-gear"
+									action="destinationgo" />
+								<p:menuitem value="Document" icon="ui-icon-gear"
+									action="documentgo" />
+								<p:menuitem value="Type document" icon="ui-icon-gear"
+									action="typedocgo" />
+								<p:menuitem value="Type Pièces jointes" icon="ui-icon-gear"
+									action="typePJgo" />
+								<p:menuitem value="Type mission" icon="ui-icon-gear"
+									action="typeMgo" />
+								<p:menuitem value="Membre équipe" icon="ui-icon-gear"
+									action="MembreEquipego" />
+									<p:menuitem value="les sous types de document" icon="ui-icon-gear"
+									action="sstypego" />
+									<p:menuitem value="Les Profils" icon="ui-icon-gear"
+									action="profilgo" />
+									<p:menuitem value="Les Modules" icon="ui-icon-gear"
+									action="modulego" />
+									<p:menuitem value="Les fonctions" icon="ui-icon-gear"
+									action="fonctiongo" />
+									<p:menuitem value="Les éléments" icon="ui-icon-gear"
+									action="elementgo" />
+									<p:menuitem value="Consultation" icon="ui-icon-gear"
+									action="consultationgo" />
+							</p:submenu>
+							<p:separator />
+							<p:submenu label="Missions">
+								<p:menuitem value="Créer une mission" icon="ui-icon-gear"
+									action="missiongo" />
+								<p:menuitem value="Consulter les missions"
+									icon="ui-icon-gear" action="missionconsgo" />
+							</p:submenu>
+							<p:submenu label="Documents">
+								<p:menuitem value="Les archives" icon="ui-icon-gear"
+									action="archivesgo" />
+								<p:menuitem value="Les sources"
+									icon="ui-icon-gear" action="sourcesgo" />
+								<p:menuitem value="Autres"
+									icon="ui-icon-gear" action="documentsgo" />
+							</p:submenu>
+							<p:separator />
+
+						</p:panelMenu>
+					</h:form>
+					
+					
+					
+					<ui:insert name="content" />
+					</div>
+				</div>
+				
+			
+			<div id="footer">
+				<ui:insert name="footer" />
+			</div>
+	</div>
+	</h:body>
+</f:view>
+</html>

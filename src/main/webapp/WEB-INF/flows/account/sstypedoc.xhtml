@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Minist�re de la p�che maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+		
+<ui:define name="content">
+		<h:form id="sstypedocForm">
+			<p:fieldset styleClass="fieldset" legend="Les sous types des documents">
+				<p:growl id="msg" showDetail="true"/>
+
+				<h:panelGrid id="sstypedocPanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+				
+				<h:panelGroup>
+						<h:outputLabel for="typedoc" value="Sous type du document:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+	
+					<p:selectOneMenu id="typedoc" value="#{std.typedoc.idType}"
+						style="text-align:left;width:150px;" title="Choisissez un type!">
+						<f:selectItems value="#{typesdoc}" var="td" itemLabel="#{td.libelle}"
+							itemValue="#{td.idType}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<p:tooltip for="sstypedoc" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+
+
+					<h:panelGroup>
+						<h:outputText value="Sous type du document:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="sstypedoc" value="#{std.libelle}" required="true"
+						label="Sous Type du document" title="Entrez le type du document!" />
+					<p:tooltip for="sstypedoc" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+
+					<h:panelGroup>
+						<h:outputText value="Description:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="desc" value="#{std.description}" required="true"
+						label="Description" title="Entrez une description!" />
+					<p:tooltip for="desc" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+					
+					<p:commandButton id="submitButton" action="sstypedoccreate"
+						update=":dataS:dataFullS,sstypedocPanelGrid,msg" icon="ui-icon-check"
+						value="Enregistrer"/>
+
+						<p:commandButton id="backHome" action="backHome" immediate="true"
+						icon="ui-icon-home"
+						value="Accueil"/>
+						
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+		
+		<h:form id="dataS">
+		<p:growl id="message" showDetail="true" />
+		
+		<p:dataTable var="ss" value="#{sstypesdoc}" id="dataFullS" paginator="true" rows="10" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+		rowsPerPageTemplate="5,10,15" editable="true" style="margin-bottom:20px">
+
+		<p:ajax event="rowEdit" listener="#{soustypedocService.onRowEdit}" update=":datadoc:message"/>
+		<p:ajax event="rowEditCancel" listener="#{soustypedocService.onRowCancel}" update=":datadoc:message"/>
+	
+
+   	 <p:column headerText="Id" filterBy="#{ss.idSousType}" filterMatchMode="exact">
+        <h:outputText value="#{ss.idSousType}" />
+    </p:column>
+ <p:column headerText="Type document" filterBy="#{ss.typedoc.libelle}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{ss.typedoc.libelle}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{ss.typedoc.idType}"
+								style="width:100%">
+								<f:selectItems value="#{typesdoc}" var="t"
+									itemLabel="#{t.libelle}" itemValue="#{t.idType}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+ 
+    <p:column headerText="Libell�" filterBy="#{ss.libelle}" filterMatchMode="contains">
+    	<p:cellEditor>
+    	  	<f:facet name="output" > <h:outputText value="#{ss.libelle}" /> </f:facet>
+     	  	<f:facet name="input" > <p:inputText value="#{ss.libelle}" style="width:100%"/> </f:facet>
+    	  </p:cellEditor>  
+    </p:column>
+ 
+  <p:column headerText="Description" filterBy="#{ss.description}" filterMatchMode="contains">
+       <p:cellEditor>
+    	  	<f:facet name="output" > <h:outputText value="#{ss.description}" /> </f:facet>
+    	  	<f:facet name="input" > <p:inputText value="#{ss.description}" style="width:100%"/> </f:facet>
+    	</p:cellEditor>  	
+    </p:column>
+    
+    <p:column style="width:40px;" headerText="Modifier">
+    	<p:rowEditor />
+    </p:column>
+   <p:column style="width:40px;" headerText="Supprimer">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{soustypedocService.delete(ss)}" action="deleteSStypedoc" update=":dataS:message,:dataS:dataFullS">
+ 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
+ 		
+ 		</p:commandButton>
+ </p:column>
+ 
+</p:dataTable>
+ 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":dataS:message,:dataS:dataFullS"/>
+		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		
+	</p:confirmDialog> 
+
+</h:form>
+	</ui:define>
+
+</ui:composition>

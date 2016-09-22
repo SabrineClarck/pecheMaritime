@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+		
+<ui:define name="content">
+		<h:form id="typedocForm">
+			<p:fieldset styleClass="fieldset" legend="Les types des documents">
+				<p:growl id="msg" showDetail="true"/>
+
+				<h:panelGrid id="typedocPanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+				
+
+					<h:panelGroup>
+						<h:outputText value="Type du document:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="typedoc" value="#{td.libelle}" required="true"
+						label="Type du document" title="Entrez le type du document!" />
+					<p:tooltip for="typedoc" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+
+					<h:panelGroup>
+						<h:outputText value="Description:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="desc" value="#{td.description}" required="true"
+						label="Description" title="Entrez une description!" />
+					<p:tooltip for="desc" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+					
+					<p:commandButton id="submitButton" action="typedoccreate"
+						update=":datadoc:dataFulldoc" icon="ui-icon-check"
+						value="Enregistrer"/>
+
+						<p:commandButton id="backHome" action="backHome" immediate="true"
+						icon="ui-icon-home"
+						value="Accueil"/>
+						
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+		
+		<h:form id="datadoc">
+		<p:growl id="message" showDetail="true" />
+		
+		<p:dataTable var="d" value="#{typesdoc}" id="dataFulldoc" paginator="true" rows="10" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+		rowsPerPageTemplate="5,10,15" editable="true" style="margin-bottom:20px">
+
+		<p:ajax event="rowEdit" listener="#{typedocService.onRowEdit}" update=":datadoc:message"/>
+		<p:ajax event="rowEditCancel" listener="#{typedocService.onRowCancel}" update=":datadoc:message"/>
+	
+
+   	 <p:column headerText="Id" filterBy="#{d.idType}" filterMatchMode="exact">
+        <h:outputText value="#{d.idType}" />
+    </p:column>
+ 
+    <p:column headerText="Libellé" filterBy="#{d.libelle}" filterMatchMode="contains">
+    	<p:cellEditor>
+    	  	<f:facet name="output" > <h:outputText value="#{d.libelle}" /> </f:facet>
+     	  	<f:facet name="input" > <p:inputText value="#{d.libelle}" style="width:100%"/> </f:facet>
+    	  </p:cellEditor>  
+    </p:column>
+ 
+  <p:column headerText="Description" filterBy="#{d.description}" filterMatchMode="contains">
+       <p:cellEditor>
+    	  	<f:facet name="output" > <h:outputText value="#{d.description}" /> </f:facet>
+    	  	<f:facet name="input" > <p:inputText value="#{d.description}" style="width:100%"/> </f:facet>
+    	</p:cellEditor>  	
+    </p:column>
+    
+    <p:column style="width:40px;" headerText="Modifier">
+    	<p:rowEditor />
+    </p:column>
+   <p:column style="width:40px;" headerText="Supprimer">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{typedocService.delete(d)}" action="deleteTypedoc" update=":datadoc:message,:datadoc:dataFulldoc">
+ 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
+ 		
+ 		</p:commandButton>
+ </p:column>
+ 
+</p:dataTable>
+ 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":datadoc:message,:datadoc:dataFulldoc"/>
+		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		
+	</p:confirmDialog> 
+
+</h:form>
+	</ui:define>
+
+</ui:composition>

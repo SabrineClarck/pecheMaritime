@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+		
+<ui:define name="content">
+		<h:form id="missionForm">
+			<p:fieldset styleClass="fieldset" legend="Les missions">
+				<p:growl id="msg" showDetail="true"/>
+
+		<p:wizard>
+			<p:tab id="mission" title="Mission">
+				<h:panelGrid id="missionPanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+					
+					
+					<p:outputLabel for="typeM" value="Le type de mission: "/> 
+					
+					<p:selectOneMenu id="typeM" value="#{miss.typemission.idType}" style="text-align:left;width:150px;">
+						<f:selectItems value="#{typesmission}" var="m" itemLabel="#{m.type}" itemValue="#{m.idType}" style="text-align:left;width:150px;"/>
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+					
+
+					<h:panelGroup>
+						<h:outputText value="Titre de la mission:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="titreM" value="#{miss.titre}" required="true"
+						label="titreM" title="Entrez le titre de la mission!" />
+					<p:tooltip for="titreM" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+
+					<h:panelGroup>
+						<h:outputText value="Date de début:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+       				 <p:calendar id="effect1" styleClass="dateDM" pattern="yyyy-MM-dd" value="#{miss.debut}" effect="fold" title="Appuyer sur le champ!" />	
+       				 <p:tooltip for="effect1" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+	
+					<h:panelGroup>
+						<h:outputText value="Date de fin:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+       				 <p:calendar id="effect2" styleClass="dateFM" pattern="yyyy-MM-dd" value="#{miss.fin}" effect="fold" title="Appuyer sur le champ!" />	
+       				 <p:tooltip for="effect2" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+			
+					<h:panelGroup>
+						<h:outputText value="L'objet: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="objetM" value="#{miss.objet}" required="true"
+						label="description" title="Entrez un objet!" />
+					<p:tooltip for="objetM" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+						
+		
+						<h:panelGroup>
+						<h:outputText value="Le détail: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputTextarea rows="6" cols="30" counter="display" maxlength="254" 
+					counterTemplate="{0} caractères restants." id="detailM" value="#{miss.detail}" required="true"
+						label="detailM" title="Entrez un détail!" />
+					<p:tooltip for="detailM" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+					
+					<h:outputText value=""/>
+					
+					<p:commandButton action="missioncreate"
+						update="missionPanelGrid,msg" icon="ui-icon-check"
+						value="Enregistrer" />
+								<h:outputText value=""/>
+			
+				</h:panelGrid>
+			</p:tab>
+			
+			<p:tab id="destination" title="Destination">
+					<h:panelGrid id="destinationPanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+
+
+				<p:outputLabel for="m" value="La mission: " /> 
+					<p:selectOneMenu id="m" value="#{des.mission.idMission}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{missions}" var="ms" itemLabel="#{ms.titre}"
+							itemValue="#{ms.idMission}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+			 
+					<p:outputLabel for="ent" value="L'entité: " /> 
+					<p:selectOneMenu id="ent" value="#{des.entite.idEntite}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{entites}" var="en" itemLabel="#{en.intitule}"
+							itemValue="#{en.idEntite}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+			
+				 	
+					<p:outputLabel for="vl" value="La ville: " />
+					<p:selectOneMenu id="vl" value="#{des.ville.idVille}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{villes}" var="vi" itemLabel="#{vi.intitule}"
+							itemValue="#{vi.idVille}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					
+					
+					<!--  here there is no need to 
+					show this selectOnemenu because we are using the wizard  -->
+					
+					<!-- %%%%%%%%%%%%%%%%%% -->
+					<h:panelGroup>
+						<h:outputText value="Description: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputTextarea rows="5" cols="30" counter="display" maxlength="254"
+					 id="descD" value="#{des.description}" counterTemplate="{0} charactères restants."
+						required="true" label="Intitulé ville" title="Entrez une description!" />
+						<h:outputText id="display"/>
+					<p:tooltip for="descD" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+					
+					<h:outputText value=""/>
+					<p:commandButton action="destinationcreate"
+						update="destinationPanelGrid,msg"
+						icon="ui-icon-check" value="Enregistrer" />
+								<h:outputText value=""/>
+			
+				</h:panelGrid>
+			</p:tab>
+			
+			<p:tab id="membre" title="Membre équipe">
+				<h:panelGrid id="membrePanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+
+					<p:outputLabel for="mi" value="La mission: " /> 
+					<p:selectOneMenu id="mi" value="#{mem.mission.idMission}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{missions}" var="me" itemLabel="#{me.titre}"
+							itemValue="#{me.idMission}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+
+					<p:outputLabel for="user" value="L'utilisateur: " /> 
+					<p:selectOneMenu id="user" value="#{mem.user.idUser}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{users}" var="u" itemLabel="#{u.nom}"
+							itemValue="#{u.idUser}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					
+					<!--  here there is no need to 
+					show this selectOnemenu because we are using the wizard  -->
+					
+										<!-- %%%%%%%%%%%%%%%%%% -->
+					
+					<h:panelGroup>
+						<h:outputText value="Fonction: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="fonction" value="#{mem.fonction}"
+						required="true" label="Fonction" title="Entrez la fonction!" />
+					<p:tooltip for="fonction" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+					<h:outputText value=""/>
+					
+					<p:commandButton action="membrecreate"
+						update="membrePanelGrid"
+						icon="ui-icon-check" value="Enregistrer" />
+					
+										<h:outputText value=""/>
+					
+				</h:panelGrid>
+			</p:tab>
+			
+			<p:tab id="piece" title="Pièces jointes">
+			
+				<h:panelGrid id="missionpjPanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+
+					<h:panelGroup>
+						<h:outputText value="Titre: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="titrePJ" value="#{pj.titre}"
+						required="true" label="titre" title="Entrez le titre!" />
+					<p:tooltip for="titrePJ" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+						
+					<h:panelGroup>
+						<h:outputText value="Date d'ajout:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+       				 <p:calendar id="effectPJ" styleClass="dateFM" pattern="yyyy-MM-dd" value="#{pj.dateAjout}" effect="fold" title="Appuyer sur le champ!" />	
+       				 <p:tooltip for="effectPJ" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+					
+					<h:panelGroup>
+						<h:outputText value="La description: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputTextarea rows="6" cols="30" counter="display" maxlength="254" counterTemplate="{0} caractères restants." id="detail" value="#{pj.description}" required="true"
+						label="detail" title="Entrez une description!" />
+					<p:tooltip for="detail" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+
+					<p:outputLabel for="o" value="La mission: " /> 
+					<p:selectOneMenu id="o" value="#{pj.mission.idMission}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{missions}" var="mj" itemLabel="#{mj.titre}"
+							itemValue="#{mj.idMission}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+				
+				<p:outputLabel for="typePJ" value="Le type des pièces jointes: " />
+										
+					<p:selectOneMenu id="typePJ" value="#{pj.typepj.idType}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{types}" var="p" itemLabel="#{p.type}"
+							itemValue="#{p.idType}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					
+					
+					<!--  here there is no need to 
+					show this selectOnemenu because we are using the wizard  -->
+				
+					<!-- %%%%%%%%%%%%%%%%%% -->
+					<p:outputLabel for="doc" value="Le document: " /> 
+					<p:selectOneMenu id="doc" value="#{pj.document.idDoc}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{docs}" var="u" itemLabel="#{u.titre}"
+							itemValue="#{u.idDoc}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+					
+					
+					
+					
+					<h:outputText value=""/>
+					<p:commandButton action="missionpjcreate"
+						update="missionpjPanelGrid,msg"
+						icon="ui-icon-check" value="Enregistrer" />
+						<h:outputText value=""/>
+				</h:panelGrid>
+			</p:tab>
+			
+		</p:wizard>
+
+				
+					<p:commandButton id="backHome" action="backHome" immediate="true"
+					 icon="ui-icon-home"
+						value="Accueil" />
+
+			</p:fieldset>
+		</h:form>
+		
+	</ui:define>
+
+</ui:composition>

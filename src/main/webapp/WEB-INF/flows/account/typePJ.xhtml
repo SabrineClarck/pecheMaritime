@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+		
+<ui:define name="content">
+		<h:form id="typepjForm">
+			<p:fieldset styleClass="fieldset" legend="Les types des pièces jointes">
+
+			<p:growl id="sms" showDetail="true"/>
+
+				<h:panelGrid id="typepjPanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+				
+
+					<h:panelGroup>
+						<h:outputText value="Type de la pièce jointe:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="type" value="#{pj.type}" required="true"
+						label="Intitulé ville" title="Entrez le type de la pièce jointe!" />
+					<p:tooltip for="type" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+
+					<h:panelGroup>
+						<h:outputText value="Description:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="desc" value="#{pj.description}" required="true"
+						label="Description" title="Entrez une description!" />
+					<p:tooltip for="desc" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+					
+					<p:commandButton id="submitButton" action="typepjcreate"
+						update=":datapj:dataFullpj,typepjPanelGrid,sms" icon="ui-icon-check"
+						value="Enregistrer"/>
+
+					<p:commandButton id="backHome" action="backHome" immediate="true"
+						 icon="ui-icon-home"
+						value="Accueil"/>
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+		
+		<h:form id="datapj">
+		<p:growl id="msg" showDetail="true" />
+		<p:dataTable var="vm" value="#{types}" id="dataFullpj" paginator="true" rows="10" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+		rowsPerPageTemplate="5,10,15" editable="true" style="margin-bottom:20px">
+	
+		<p:ajax event="rowEdit" listener="#{typepjService.onRowEdit}" update=":datapj:msg"/>
+		<p:ajax event="rowEditCancel" listener="#{typepjService.onRowCancel}" update=":datapj:msg"/>
+	
+   	 <p:column headerText="Id" filterBy="#{vm.idType}" filterMatchMode="exact">
+        <h:outputText value="#{vm.idType}" />
+    </p:column>
+ 
+    <p:column headerText="Type" filterBy="#{vm.type}" filterMatchMode="contains">
+       <p:cellEditor>
+       		<f:facet name="output"> <h:outputText value="#{vm.type}" /> </f:facet>
+       		<f:facet name="input"> <p:inputText value="#{vm.type}" style="width:100%" /> </f:facet>
+        </p:cellEditor>
+    </p:column>
+ 
+  <p:column headerText="Description" filterBy="#{vm.description}" filterMatchMode="contains">
+       <p:cellEditor>
+        	<f:facet name="output"> <h:outputText value="#{vm.description}" /></f:facet>
+        	 <f:facet name="input"> <p:inputText value="#{vm.description}" style="width:100%" /> </f:facet>
+        	</p:cellEditor>
+    </p:column>
+     <p:column style="width:40px;" headerText="Modifier">
+    	<p:rowEditor />
+    </p:column>
+  <p:column style="width:40px;" headerText="Supprimer">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{typepjService.delete(vm)}" action="deleteTypepj" update=":datapj:msg,:datapj:dataFullpj">
+ 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
+ 		
+ 		</p:commandButton>
+ </p:column>
+ 
+</p:dataTable>
+ 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":datapj:msg,:datapj:dataFullpj"/>
+		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		
+	</p:confirmDialog> 
+
+</h:form>
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+
+	<ui:define name="content">
+		<h:form id="missionpjForm">
+			<p:fieldset styleClass="fieldset" legend="Les pièces jointes">
+				<p:growl id="msg" showDetail="true"/>
+
+
+				<h:panelGrid id="missionpjPanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+
+					<p:outputLabel for="type" value="Le type des pièces jointes: " />
+					<p:selectOneMenu id="type" value="#{pj.typepj.idType}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{types}" var="p" itemLabel="#{p.type}"
+							itemValue="#{p.idType}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+					
+					<p:outputLabel for="mission" value="La mission: " />
+					<p:selectOneMenu id="mission" value="#{pj.mission.idMission}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{missions}" var="u" itemLabel="#{u.titre}"
+							itemValue="#{u.idMission}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+					
+					<p:outputLabel for="doc" value="Le document: " />
+					<p:selectOneMenu id="doc" value="#{pj.doc.idDoc}"
+						style="text-align:left;width:150px;">
+						<f:selectItems value="#{docs}" var="u" itemLabel="#{u.titre}"
+							itemValue="#{u.idDoc}" style="text-align:left;width:150px;" />
+					</p:selectOneMenu>
+					<h:outputText value=""/>
+					
+					<h:panelGroup>
+						<h:outputText value="Titre: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="titre" value="#{pj.titre}"
+						required="true" label="titre" title="Entrez le titre!" />
+					<p:tooltip for="titre" styleClass="tooltip" showEvent="focus"
+						hideEvent="blur" />
+						
+					
+					<h:panelGroup>
+						<h:outputText value="Date d'ajout:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+       				 <p:calendar id="effect" styleClass="dateFM" pattern="yyyy-MM-dd" value="#{pj.dateAjout}" effect="fold" title="Appuyer sur le champ!" />	
+       				 <p:tooltip for="effect" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+					
+					<h:panelGroup>
+						<h:outputText value="La description: " />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputTextarea rows="6" cols="30" counter="display" maxlength="254" counterTemplate="{0} caractères restants." id="detail" value="#{pj.description}" required="true"
+						label="detail" title="Entrez une description!" />
+					<p:tooltip for="detail" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+					
+					
+					<p:commandButton id="submitButton" action="missionpjcreate"
+						update=":dataM:dataFullM,missionpjPanelGrid,msg,missionpjForm"
+						icon="ui-icon-check" value="Enregistrer" />
+						
+						<p:commandButton id="backHome" action="backHome" immediate="true"
+						icon="ui-icon-home" value="Accueil" />
+
+
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+
+		<h:form id="dataM">
+			<p:growl id="message" showDetail="true" />
+
+			<p:dataTable var="m" value="#{missionpjs}" id="dataFullM"
+				paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" editable="true"
+				style="margin-bottom:20px">
+
+				<p:ajax event="rowEdit" listener="#{missionpjService.onRowEdit}"
+					update=":dataM:message" />
+				<p:ajax event="rowEditCancel"
+					listener="#{missionpjService.onRowCancel}" update=":dataM:message" />
+
+
+				<p:column headerText="Id" filterBy="#{m.idPj}"
+					filterMatchMode="exact">
+					<h:outputText value="#{m.idPj}" />
+				</p:column>
+				
+
+				<p:column headerText="Type" filterBy="#{m.typemission.type}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{m.typemission.type}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{m.typemission.idType}"
+								style="width:100%">
+								<f:selectItems value="#{types}" var="p"
+									itemLabel="#{p.type}" itemValue="#{p.idType}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+				
+				
+				<p:column headerText="Mission" filterBy="#{m.mission.titre}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{m.mission.titre}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{m.mission.idMission}"
+								style="width:100%">
+								<f:selectItems value="#{missions}" var="u"
+									itemLabel="#{u.titre}" itemValue="#{u.idMission}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+				
+					<p:column headerText="Document" filterBy="#{m.document.titre}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{m.document.titre}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{m.document.idDoc}"
+								style="width:100%">
+								<f:selectItems value="#{docs}" var="u"
+									itemLabel="#{u.titre}" itemValue="#{u.idDoc}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Titre" filterBy="#{m.titre}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{m.titre}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{m.titre}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Date d'ajout" filterBy="#{m.dateAjout}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{m.dateAjout}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:calendar value="#{m.dateAjout}" pattern="yyyy-MM-dd" effect="fold" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Description" filterBy="#{m.description}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{m.description}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{m.description}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:40px;" headerText="Modifier">
+					<p:rowEditor />
+				</p:column>
+				
+				 <p:column style="width:40px;" headerText="Supprimer">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{missionpjService.delete(m)}" action="deleteMissionpj" update=":dataM:message,:dataM:dataFullM">
+ 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
+ 		
+ 		</p:commandButton>
+ </p:column>
+ </p:dataTable>
+ 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":dataM:message,:dataM:dataFullM"/>
+		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		
+	</p:confirmDialog> 
+				
+			
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

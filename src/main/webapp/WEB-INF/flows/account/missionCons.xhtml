@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+		
+<ui:define name="content">
+		<h:form id="dataD">
+			<p:fieldset styleClass="fieldset" legend="Les missions">
+				<p:growl id="msg" showDetail="true"/>
+				
+				
+			<p:growl id="message" showDetail="true" />
+
+			<p:dataTable var="d" value="#{destinations}" id="dataFullD"
+				paginator="true" rows="10"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				rowsPerPageTemplate="5,10,15" editable="true"
+				style="margin-bottom:20px">
+
+				<p:ajax event="rowEdit" listener="#{destinationService.onRowEdit}"
+					update=":dataD:message" />
+				<p:ajax event="rowEditCancel"
+					listener="#{destinationService.onRowCancel}" update=":dataD:message" />
+
+
+				<p:column headerText="Id" filterBy="#{d.idDestination}"
+					filterMatchMode="exact">
+					<h:outputText value="#{d.idDestination}" />
+				</p:column>
+				
+
+				<p:column headerText="Entité" filterBy="#{d.entite.intitule}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{d.entite.intitule}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{d.entite.idEntite}"
+								style="width:100%">
+								<f:selectItems value="#{entites}" var="c"
+									itemLabel="#{c.intitule}" itemValue="#{c.idEntite}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Ville" filterBy="#{d.ville.intitule}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{d.ville.intitule}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{d.ville.idVille}"
+								style="width:100%">
+								<f:selectItems value="#{villes}" var="c"
+									itemLabel="#{c.intitule}" itemValue="#{c.idVille}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Mission" filterBy="#{d.mission.titre}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{d.mission.titre}" />
+						</f:facet>
+				 	<f:facet name="input">
+							<h:selectOneMenu value="#{d.mission.idMission}"
+								style="width:100%">
+								<f:selectItems value="#{missions}" var="c"
+									itemLabel="#{c.titre}" itemValue="#{c.idMission}" />
+							</h:selectOneMenu>
+						</f:facet> 
+					</p:cellEditor>
+				</p:column>
+
+				<p:column headerText="Description" filterBy="#{d.description}"
+					filterMatchMode="contains">
+					<p:cellEditor>
+						<f:facet name="output">
+							<h:outputText value="#{d.description}" />
+						</f:facet>
+						<f:facet name="input">
+							<p:inputText value="#{d.description}" />
+						</f:facet>
+					</p:cellEditor>
+				</p:column>
+
+				<p:column style="width:40px;" headerText="Modifier">
+					<p:rowEditor />
+				</p:column>
+				
+				 <p:column style="width:40px;" headerText="Supprimer">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{destinationService.delete(d)}" action="deleteDestination" update=":dataD:message,:dataD:dataFullD">
+ 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
+ 		
+ 		</p:commandButton>
+ </p:column>
+ </p:dataTable>
+ 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":dataD:message,:dataD:dataFullD"/>
+		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		
+	</p:confirmDialog> 
+				
+		</p:fieldset>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+		
+<ui:define name="content">
+		<h:form id="villeForm">
+			<p:fieldset styleClass="fieldset" legend="Les villes">
+				
+
+			<p:growl id="msg" showDetail="true" life="70"/>
+				<h:panelGrid id="villePanelGrid"
+					style="margin: 0 auto; margin-top: 25px; text-align: right"
+					cellspacing="8" columns="3">
+				
+
+					<h:panelGroup>
+						<h:outputText value="Intitulé de la ville:" />
+						<h:outputText style="color:red" value="*  " />
+					</h:panelGroup>
+					<p:inputText id="intituleVille" value="#{v.intitule}" required="true"
+						label="Intitulé ville" title="Entrez l'intitulé de la ville!" />
+					<p:tooltip for="intituleVille" styleClass="tooltip"
+						showEvent="focus" hideEvent="blur" />
+
+					
+					<p:commandButton id="submitButton" action="villecreate"
+						update=":data,villePanelGrid,msg" icon="ui-icon-check"
+						value="Enregistrer"/>
+					<p:commandButton id="backHome" action="backHome" immediate="true"
+						 icon="ui-icon-home"
+						value="Acceuil"/>
+
+				</h:panelGrid>
+			</p:fieldset>
+		</h:form>
+		
+		<h:form id="data">
+		<p:growl id="sms" showDetail="true"/>
+		<p:dataTable var="vi" value="#{villes}" id="dataFull" editable="true" style="margin-bottom:20px;" paginator="true" rows="10" paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+		rowsPerPageTemplate="5,10,15">
+	
+	<p:ajax event="rowEdit" listener="#{villeService.onRowEdit}" update=":data:sms"/>
+	<p:ajax event="rowEditCancel" listener="#{villeService.onRowCancel}" update=":data:sms"/>
+	
+   	 <p:column headerText="Id" filterBy="#{vi.idVille}" filterMatchMode="exact">
+   	 	
+        	  <h:outputText value="#{vi.idVille}" /> 
+        
+    </p:column>
+ 
+    <p:column headerText="Ville" filterBy="#{vi.intitule}" filterMatchMode="contains">
+    	<p:cellEditor>
+        	<f:facet name="output">	<h:outputText value="#{vi.intitule}" /> </f:facet>
+        	<f:facet name="input">	<p:inputText value="#{vi.intitule}" style="width:100%;"/> </f:facet>
+        </p:cellEditor>
+    </p:column>
+    
+    <p:column style="width:40px;" headerText="Modifier">
+    	<p:rowEditor />
+    </p:column>
+ 
+ <p:column style="width:40px;" headerText="Supprimer">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{villeService.delete(vi)}" action="deleteVille" update=":data:sms,:data:dataFull">
+ 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
+ 		
+ 		</p:commandButton>
+ </p:column>
+ 
+</p:dataTable>
+ 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
+		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":data:sms,:data:dataFull"/>
+		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		
+	</p:confirmDialog> 
+
+</h:form>
+	</ui:define>
+
+</ui:composition>
