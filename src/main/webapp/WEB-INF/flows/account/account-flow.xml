@@ -21,6 +21,7 @@
 	<!--  	<evaluate expression="userService.loadUserEntityByUsername(currentUser.name)" result="flowScope.user"/>
 	</on-start> -->
 <!-- *********************************************La page principale***************************************** -->
+	
 	<view-state id="home" view="accountHome.xhtml">
 		<transition on="villego" to="villePage"/>
 		
@@ -35,6 +36,12 @@
 		<transition on="documentgo" to="docPage"/>
 		
 		<transition on="typeMgo" to="typemPage"/>
+		
+		<transition on="missionADgo" to="missionADPage"/>
+		
+		<transition on="accountgo" to="accountPage"/>
+		
+		<transition on="missionpjgo" to="missionpjPage"/>
 		
 		<transition on="profilgo" to="profilPage"/>
 		
@@ -183,6 +190,7 @@
 					<!--   Mission   -->
 					
 	<view-state id="missionPage" view="mission.xhtml" model="{miss,des,mem,pj}">
+
 	<var name="miss" class="ma.siig.domain.Mission"/>
 	<var name="des" class="ma.siig.domain.Destination"/>
 	<var name="mem" class="ma.siig.domain.Membreequipe"/>
@@ -197,11 +205,13 @@
 		<evaluate expression="utilisateurService.findAll()" result="flowScope.users"/>
 		<evaluate expression="typepjService.findAll()" result="flowScope.types"/>
 		<evaluate expression="documentService.findAll()" result="flowScope.docs"/>
-		<evaluate expression="missionService.findAll()" result="flowScope.missions"/>
+		<evaluate expression="missionService.updateList()" result="flowScope.missions"/>
+		
 		
 	</on-entry>
 	
 		<transition on="missioncreate">
+			
 			<evaluate expression="missionService.save(miss)"/>
 			<evaluate expression="missionService.findAll()" result="flowScope.missions"/>
 			
@@ -267,6 +277,16 @@
 	********************************************************************************  -->
 	<view-state id="accountPage" view="account.xhtml" model="acc">
 		<var name="acc" class="ma.siig.domain.Account"/>
+		<on-entry>
+			<evaluate expression="profilService.findAll()" result="flowScope.profils"/>
+			<evaluate expression="utilisateurService.findAll()" result="flowScope.users"/>
+			<evaluate expression="accountService.findAll()" result="flowScope.accounts"/>			
+		</on-entry>
+		<transition on="accountcreate" to="accountPage">
+			<evaluate expression="accountService.save(acc)"/>
+		</transition>
+		<transition on="deleteAccount" to="accountPage"/>
+			
 	</view-state>
 	<!--  						 **
 									*****
@@ -325,7 +345,7 @@
 	********************************************************************************  -->
 	<view-state id="missionConsPage" view="missionCons.xhtml">
 		<on-entry>
-			<evaluate expression="missionService.findAll()" result="flowScope.missions"/>
+			<evaluate expression="missionService.updateList()" result="flowScope.missions"/>
 		</on-entry>
 	</view-state>
 	<!--  							 **
@@ -385,8 +405,43 @@
 	<!--  							 **
 								*****
 	********************************************************************************  -->
+	<view-state id="missionADPage" view="missionAD.xhtml" model="mi">
+		<var name="mi" class="ma.siig.domain.Mission"/>
+		<on-entry>
+			<evaluate expression="typemissionService.findAll()" result="flowScope.types"/>
+			<evaluate expression="missionService.updateList()" result="flowScope.missions"/>
+		</on-entry>
 	
 	
+		<transition on="missioncreate" to="missionADPage">
+			<evaluate expression="missionService.save(mi)"/>
+		</transition>
+		<transition on="deletemission" to="missionADPage"/>
+			
+	</view-state>
+	
+	<!--  							 **
+								*****
+	********************************************************************************  -->
+	<view-state id="missionpjPage" view="documents.xhtml" model="do">
+		<var name="do" class="ma.siig.domain.Document"/>
+		<on-entry>
+			<evaluate expression="soustypedocService.findOthers()" result="flowScope.typesdoc"/>
+			<evaluate expression="documentService.findOthers()" result="flowScope.documents"/>
+		</on-entry>
+	
+	
+		<transition on="docreate" to="documentsPage">
+			<evaluate expression="documentService.findOthers()" result="flowScope.documents"/>
+		</transition>
+		<transition on="deleteDocument" to="documentsPage">
+			<evaluate expression="documentService.findOthers()" result="flowScope.documents"/>
+		</transition>
+	</view-state>
+
+	<!--  							 **
+								*****
+	********************************************************************************  -->
 	<global-transitions>
 		<transition on="backHome" to="home"/>
 	</global-transitions>

@@ -19,7 +19,6 @@ public class VilleConverter implements Converter {
 
 	VilleService vs;
 	
-	@Override
 	public Object getAsObject(FacesContext face, UIComponent arg1, String value) {
 		
 	
@@ -38,7 +37,6 @@ public class VilleConverter implements Converter {
 		return vs.findById(id);
 	}
 
-	@Override
 	public String getAsString(FacesContext face, UIComponent arg1, Object value) {
 		
 		if(value == null){

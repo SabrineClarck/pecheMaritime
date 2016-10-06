@@ -32,19 +32,9 @@ public class MissionServiceImpl implements MissionService {
 
 
 	public Mission save(Mission mission) {
-		
-		mission.setEtat(Etats.CR.toString());
-		
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-		Date d = new Date();
-		df.format(d);
-		
-		if(d.equals(mission.getDebut())){
 			
-			mission.setEtat(Etats.EN.toString());
-		}
-		
-		if(missionDao.save(mission) != null){
+			mission.setEtat(Etats.CR.toString());
+			if(missionDao.save(mission) != null){
 			 FacesMessage msg = new FacesMessage("Mission bien enregistrée");
 				
 		        FacesContext.getCurrentInstance().addMessage(null, msg);
@@ -90,6 +80,41 @@ public class MissionServiceImpl implements MissionService {
 	}
 
 	
+	public List<Mission> updateList(){
+		
+		List<Mission> miss = findAll();
+		//1. on teste si l'état de la mission est crée
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		dateFormat.format(date);
+		
+		for(Mission m : miss){
+			if(isCree(m)){
+				
+				// si l'etat de la mission est bien crée on teste si aujourd'hui est le jour de début de la mission
+				if(date.equals(m.getDebut()) || date.after(m.getDebut())){
+					m.setEtat(Etats.EN.toString());
+					m = update(m);
+						}
+												}
+			
+			
+			if(isEnCours(m)){
+			  //2. on teste si l'etat de la mission est en cours
+				if(rapportFinal(m.getMissionpjs())){
+					// on teste si parmi les pièces jointes de la mission il y a la fiche ou le repport final.
+					m.setEtat(Etats.CL.toString());
+					m = update(m);
+													}	
+							}
+			
+							}
+		// on retourne la list des missions après modification
+		return miss;
+	}
+	
+
 	public void flush() {
 		
 		missionDao.flush();
@@ -103,11 +128,11 @@ public class MissionServiceImpl implements MissionService {
 		update(en);
 		FacesMessage msg = new FacesMessage("Mission modifiée ");
         FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
+		}else{
 		
 		FacesMessage msg = new FacesMessage("Impossible de modifier la mission, car elle est ", ((Mission) event.getObject()).getEtat());
 		msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().addMessage(null, msg);}
 	}
 
 
@@ -123,20 +148,37 @@ public class MissionServiceImpl implements MissionService {
 	private boolean rapportFinal(Set<Missionpj> types){
 		
 		Iterator<Missionpj> itr = types.iterator();
-		
+		boolean decision = false;
 		while(itr.hasNext()){
 		// this may be changed because here we're using hard Code, which is not very
 			//practical
-			if(itr.next().getTypepj().getType().equalsIgnoreCase("Rapport final")){
-				return true;
+			if(itr.next().getTypepj().getType().equalsIgnoreCase("Fiche final")){
+				decision = true;
 			}else{
-				return false;
+				decision = false;
 			}
 		}
-		return false;
+		return decision;
 		
 	}
 	
+	
+	public boolean isEnCours(Mission mission){
+		if(mission.getEtat().equalsIgnoreCase(Etats.EN.toString())){
+			return true;
+			}else{
+			return false;
+			}
+	}
+	
+	public boolean isCree(Mission mission){
+		
+		if(mission.getEtat().equalsIgnoreCase(Etats.CR.toString())){
+		return true;
+		}else{
+		return false;
+		}
+	}
 	
 	
 	private enum Etats{

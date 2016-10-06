@@ -15,7 +15,6 @@
 <ui:define name="content">
 		<h:form id="dataD">
 			<p:fieldset styleClass="fieldset" legend="Les missions">
-				<p:growl id="msg" showDetail="true"/>
 				
 				
 			<p:growl id="message" showDetail="true" />
@@ -103,7 +102,7 @@
 				</p:column>
 				
 				 <p:column style="width:40px;" headerText="Supprimer">
- 		<p:commandButton icon="ui-icon-trash"  actionListener="#{destinationService.delete(d)}" action="deleteDestination" update=":dataD:message,:dataD:dataFullD">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{mService.delete(d)}" action="deleteDestination" update=":dataD:message,:dataD:dataFullD">
  		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
  		
  		</p:commandButton>

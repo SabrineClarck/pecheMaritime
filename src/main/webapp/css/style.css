@@ -155,4 +155,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', end
 	
 }
 
+.ui-tabs{
+		margin-top: 10px;
+}
 
+.ui-tabs-panel{
+  	background: url(images/gray_texture1.jpg) !important;
+}	

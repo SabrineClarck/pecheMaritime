@@ -17,8 +17,8 @@
 			<p:fieldset styleClass="fieldset" legend="Les missions">
 				<p:growl id="msg" showDetail="true"/>
 
-		<p:wizard>
-			<p:tab id="mission" title="Mission">
+		<p:tabView id="tabMission" dynamic="true" cache="true">
+			<p:tab title="Mission">
 				<h:panelGrid id="missionPanelGrid"
 					style="margin: 0 auto; margin-top: 25px; text-align: right"
 					cellspacing="8" columns="3">
@@ -79,15 +79,15 @@
 					
 					<h:outputText value=""/>
 					
-					<p:commandButton action="missioncreate"
-						update="missionPanelGrid,msg" icon="ui-icon-check"
+					<p:commandButton id="cmdMission" action="missioncreate"
+						update=":missionForm:msg" icon="ui-icon-check"
 						value="Enregistrer" />
 								<h:outputText value=""/>
 			
 				</h:panelGrid>
 			</p:tab>
 			
-			<p:tab id="destination" title="Destination">
+			<p:tab title="Destination">
 					<h:panelGrid id="destinationPanelGrid"
 					style="margin: 0 auto; margin-top: 25px; text-align: right"
 					cellspacing="8" columns="3">
@@ -134,15 +134,15 @@
 						hideEvent="blur" />
 					
 					<h:outputText value=""/>
-					<p:commandButton action="destinationcreate"
-						update="destinationPanelGrid,msg"
+					<p:commandButton id="cmdDestination" action="destinationcreate"
+						update=":missionForm:msg"
 						icon="ui-icon-check" value="Enregistrer" />
 								<h:outputText value=""/>
 			
 				</h:panelGrid>
 			</p:tab>
 			
-			<p:tab id="membre" title="Membre équipe">
+			<p:tab title="Membre équipe">
 				<h:panelGrid id="membrePanelGrid"
 					style="margin: 0 auto; margin-top: 25px; text-align: right"
 					cellspacing="8" columns="3">
@@ -177,8 +177,8 @@
 						hideEvent="blur" />
 					<h:outputText value=""/>
 					
-					<p:commandButton action="membrecreate"
-						update="membrePanelGrid"
+					<p:commandButton id="cmdMembre" action="membrecreate"
+						update=":missionForm:msg"
 						icon="ui-icon-check" value="Enregistrer" />
 					
 										<h:outputText value=""/>
@@ -186,7 +186,7 @@
 				</h:panelGrid>
 			</p:tab>
 			
-			<p:tab id="piece" title="Pièces jointes">
+			<p:tab title="Pièces jointes">
 			
 				<h:panelGrid id="missionpjPanelGrid"
 					style="margin: 0 auto; margin-top: 25px; text-align: right"
@@ -251,14 +251,14 @@
 					
 					
 					<h:outputText value=""/>
-					<p:commandButton action="missionpjcreate"
-						update="missionpjPanelGrid,msg"
+					<p:commandButton id="cmdPiece" action="missionpjcreate"
+						update=":missionForm:msg"
 						icon="ui-icon-check" value="Enregistrer" />
 						<h:outputText value=""/>
 				</h:panelGrid>
 			</p:tab>
 			
-		</p:wizard>
+		</p:tabView>
 
 				
 					<p:commandButton id="backHome" action="backHome" immediate="true"

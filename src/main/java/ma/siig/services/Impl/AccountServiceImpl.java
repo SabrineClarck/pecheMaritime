@@ -29,6 +29,12 @@ public class AccountServiceImpl implements AccountService {
 
 	public Account save(Account account) {
 		
+		if(accountDao.save(account) != null){
+			FacesMessage msg = new FacesMessage("Compte crée avec succès!");
+	        FacesContext.getCurrentInstance().addMessage(null, msg);
+			
+		}
+		
 		return accountDao.save(account);
 	}
 
@@ -41,7 +47,8 @@ public class AccountServiceImpl implements AccountService {
 	
 	public void delete(Account account) {
 		accountDao.delete(account);
-
+		FacesMessage msg = new FacesMessage("Compte supprimé");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	
