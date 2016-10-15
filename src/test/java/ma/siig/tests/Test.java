@@ -41,28 +41,43 @@ public class Test {
 		//1. on teste si l'état de la mission est crée
 		//DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
-		//String dt = dateFormat.format(date);
+		Date today = new Date();
+		String dt = dateFormat.format(today);
 		
 		
     	try {
+    		 today = dateFormat.parse(dt);
+    		
     		Date date1 = dateFormat.parse("2009-12-31");
     		
 			Date date2 = dateFormat.parse("2016-10-06");
 			
 			
-			if(date1.after(date)){
+			if(date1.after(today)){
         		System.out.println("Date1 is after today");
         	}
 
-        	if(date.before(date2)){
+        	if(today.before(date2)){
         		System.out.println("today is before Date2");
         	}
 
-        	if(date.equals(date2)){
+        	if(today.equals(date2)){
         		System.out.println("today is equal Date2");
         	}
+        	
+        	if(today.after(date2)){
+        		System.out.println("today is equal Date2");
+        	}
+        	
+        	if(today.after(date1)){
+        		System.out.println("today is after Date1");
+        	}
 			
+        	if(date1.before(today)){
+        		System.out.println("date1 is before today");
+        	}
+        	
+        	
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

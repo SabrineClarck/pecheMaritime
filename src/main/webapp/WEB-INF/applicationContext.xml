@@ -28,6 +28,8 @@
 	<bean id="typepjDao" class="ma.siig.daoImpl.TypepjDaoImpl" />
 	<bean id="villeDao" class="ma.siig.daoImpl.VilleDaoImpl" />
 	<bean id="utilisateurDao" class="ma.siig.daoImpl.UtilisateurDaoImpl"/>
+	<bean id="elementDao" class="ma.siig.daoImpl.ElementDaoImpl"/>
+	
 <!--   <bean id="entiteConverterBean" class="ma.siig.ui.utils.EntiteConverter"/>  -->
 	
 	<!--  Services declarations , for injections by spring-->
@@ -103,6 +105,10 @@
 	<bean id="utilisateurService" class="ma.siig.services.Impl.UtilisateurServiceImpl">
 		<property name="utilisateurDao" ref="utilisateurDao"/>
 	</bean>  
+	
+	<bean id="elementService" class="ma.siig.services.Impl.ElementServiceImpl">
+		<property name="elementDao" ref="elementDao"/>
+	</bean>
 	
 	<!--       for the spring security configurating   -->
 	<!--  <bean id="userAuthenticationProviderService" class="ma.siig.services.Impl.UserAuthenticationProviderServiceImpl">

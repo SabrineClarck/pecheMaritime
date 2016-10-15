@@ -30,6 +30,21 @@ public class Ville implements Serializable{
     public Ville() {
     }
 
+    
+
+	/**
+	 * @param intitule
+	 * @param destinations
+	 * @param entites
+	 */
+	public Ville(String intitule, Set<Destination> destinations,
+			Set<Entite> entites) {
+		this.intitule = intitule;
+		this.destinations = destinations;
+		this.entites = entites;
+	}
+
+
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -74,46 +89,5 @@ public class Ville implements Serializable{
 		this.entites = entites;
 	}
 
-/*
-	/* (non-Javadoc)
-	 * @see java.lang.Object#hashCode()
-	 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + idVille;
-		result = prime * result
-				+ ((intitule == null) ? 0 : intitule.hashCode());
-		return result;
-	}
-
-*/
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Ville))
-			return false;
-		Ville other = (Ville) obj;
-		if (idVille != other.idVille)
-			return false;
-		if (intitule == null) {
-			if (other.intitule != null)
-				return false;
-		} else if (!intitule.equals(other.intitule))
-			return false;
-		return true;
-	}
-	
-	
-	*/
-	
-	
 	
 }

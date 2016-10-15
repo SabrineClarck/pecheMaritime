@@ -26,8 +26,19 @@ public class Privilege implements Serializable{
 
     public Privilege() {
     }
+    
+    /**
+	 * @param libelle
+	 * @param module
+	 * @param profil
+	 */
+	public Privilege(String libelle, Module module, Profil profil) {
+		this.libelle = libelle;
+		this.module = module;
+		this.profil = profil;
+	}
 
-    @PostConstruct
+	@PostConstruct
 	public void init(){
 		module = new Module();
 		profil = new Profil();

@@ -18,11 +18,13 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
+import org.springframework.transaction.annotation.Transactional;
+
+
 import ma.siig.dao.DocumentDao;
 import ma.siig.domain.Document;
 import ma.siig.domain.Soustypedoc;
 import ma.siig.services.DocumentService;
-
 public class DocumentServiceImpl implements DocumentService {
 
 	
@@ -57,7 +59,26 @@ public class DocumentServiceImpl implements DocumentService {
 		return documentDao;
 	}
 
-	
+	public void setDocument(Document document) {
+		this.document = document;
+	}
+
+
+	public Document getDocument() {
+		return document;
+	}
+
+
+	public void setSoustypedoc(Soustypedoc soustypedoc) {
+		this.soustypedoc = soustypedoc;
+	}
+
+
+	public Soustypedoc getSoustypedoc() {
+		return soustypedoc;
+	}
+
+
 	
 	
 
@@ -79,7 +100,7 @@ public class DocumentServiceImpl implements DocumentService {
 
 	
 	public void delete(Document document) {
-		FacesMessage msg = new FacesMessage("Document supprimé ", document.getTitre());
+		FacesMessage msg = new FacesMessage("Document supprimé ");
         FacesContext.getCurrentInstance().addMessage(null, msg);
 		documentDao.delete(document);
 
@@ -108,7 +129,7 @@ public class DocumentServiceImpl implements DocumentService {
 		Document en = new Document();
 		en = (Document) event.getObject();
 		update(en);
-		FacesMessage msg = new FacesMessage("Document modifié ",((Document) event.getObject()).getTitre());
+		FacesMessage msg = new FacesMessage("Document modifié ");
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
 	}
@@ -147,7 +168,7 @@ public class DocumentServiceImpl implements DocumentService {
         FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 	*/
-	
+	@Transactional
 	public void upload() throws IOException{
 	if(getFile()!= null){
 	
@@ -166,26 +187,7 @@ public class DocumentServiceImpl implements DocumentService {
 	}
 
 
-	public void setDocument(Document document) {
-		this.document = document;
-	}
-
-
-	public Document getDocument() {
-		return document;
-	}
-
-
-	public void setSoustypedoc(Soustypedoc soustypedoc) {
-		this.soustypedoc = soustypedoc;
-	}
-
-
-	public Soustypedoc getSoustypedoc() {
-		return soustypedoc;
-	}
-
-
+	
 	
 	public StreamedContent fileDownload(int id) throws IOException {
 		

@@ -25,8 +25,6 @@ public class Soustypedoc implements Serializable {
     public Soustypedoc() {
     }
 
-    
-
 	/**
 	 * @param description
 	 * @param libelle

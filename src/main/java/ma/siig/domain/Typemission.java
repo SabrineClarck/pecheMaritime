@@ -28,6 +28,17 @@ public class Typemission implements Serializable{
 
     public Typemission() {
     }
+    
+	/**
+	 * @param description
+	 * @param type
+	 * @param missions
+	 */
+	public Typemission(String description, String type, Set<Mission> missions) {
+		this.description = description;
+		this.type = type;
+		this.missions = missions;
+	}
 
 
 	@Id

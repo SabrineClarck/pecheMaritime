@@ -43,7 +43,36 @@ public class Mission implements Serializable {
     public Mission() {
     }
 
-    @PostConstruct
+    /**
+	 * @param debut
+	 * @param detail
+	 * @param etat
+	 * @param fin
+	 * @param objet
+	 * @param titre
+	 * @param destinations
+	 * @param membreequipes
+	 * @param typemission
+	 * @param missionpjs
+	 */
+	public Mission(Date debut, String detail, String etat, Date fin,
+			String objet, String titre, Set<Destination> destinations,
+			Set<Membreequipe> membreequipes, Typemission typemission,
+			Set<Missionpj> missionpjs) {
+		super();
+		this.debut = debut;
+		this.detail = detail;
+		this.etat = etat;
+		this.fin = fin;
+		this.objet = objet;
+		this.titre = titre;
+		this.destinations = destinations;
+		this.membreequipes = membreequipes;
+		this.typemission = typemission;
+		this.missionpjs = missionpjs;
+	}
+
+	@PostConstruct
     public void init(){
     	typemission = new Typemission();
     }
@@ -161,6 +190,7 @@ public class Mission implements Serializable {
 	}
 
 	public void setMissionpjs(Set<Missionpj> missionpjs) {
+
 		this.missionpjs = missionpjs;
 	}
 	

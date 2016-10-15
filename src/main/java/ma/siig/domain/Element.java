@@ -34,7 +34,25 @@ public class Element implements Serializable {
     public Element() {
     }
 
-    @PostConstruct
+    
+    
+    /**
+	 * @param code
+	 * @param libelle
+	 * @param module
+	 * @param fonctions
+	 */
+	public Element(int code, String libelle, Module module,
+			Set<Fonction> fonctions) {
+		this.code = code;
+		this.libelle = libelle;
+		this.module = module;
+		this.fonctions = fonctions;
+	}
+
+
+
+	@PostConstruct
     public void init(){
     	module = new Module();
     }

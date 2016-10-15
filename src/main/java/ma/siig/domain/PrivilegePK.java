@@ -19,7 +19,7 @@ public class PrivilegePK implements Serializable {
 
     public PrivilegePK() {
     }
-
+    
 	@Column(unique=true, nullable=false)
 	public int getIdModule() {
 		return this.idModule;

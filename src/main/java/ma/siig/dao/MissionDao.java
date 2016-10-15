@@ -13,5 +13,5 @@ public interface MissionDao {
 	public Mission findById(Integer id);
 	public List<Mission> findAll();
 	public void flush();
-	
+	public List<Mission> updateList();
 }

@@ -30,7 +30,7 @@ public class MissionpjServiceImpl implements MissionpjService {
 
 	public Missionpj save(Missionpj missionpj) {
 		if(missionpjDao.save(missionpj) != null){
-			 FacesMessage msg = new FacesMessage("Entité bien enregistrée");
+			 FacesMessage msg = new FacesMessage("Pièce jointe bien enregistrée");
 				
 		        FacesContext.getCurrentInstance().addMessage(null, msg);
 			}

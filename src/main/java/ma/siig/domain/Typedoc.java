@@ -20,7 +20,18 @@ public class Typedoc implements Serializable {
 
     public Typedoc() {
     }
-
+    
+	/**
+	 * @param description
+	 * @param libelle
+	 * @param soustypedocs
+	 */
+	public Typedoc(String description, String libelle,
+			Set<Soustypedoc> soustypedocs) {
+		this.description = description;
+		this.libelle = libelle;
+		this.soustypedocs = soustypedocs;
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

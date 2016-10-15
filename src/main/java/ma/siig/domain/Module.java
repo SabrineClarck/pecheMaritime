@@ -21,6 +21,20 @@ public class Module implements Serializable{
     public Module() {
     }
 
+    
+
+	/**
+	 * @param code
+	 * @param libelle
+	 * @param privileges
+	 */
+	public Module(int code, String libelle, Set<Privilege> privileges) {
+		this.code = code;
+		this.libelle = libelle;
+		this.privileges = privileges;
+	}
+
+
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

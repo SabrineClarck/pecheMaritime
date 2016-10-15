@@ -78,8 +78,6 @@
 									action="missionADgo" />
 									<p:menuitem value="Les comptes" icon="ui-icon-gear"
 									action="accountgo" />
-									<p:menuitem value="Les pièces jointes" icon="ui-icon-gear"
-									action="missionpjgo" />	
 								<p:menuitem value="Membre équipe" icon="ui-icon-gear"
 									action="MembreEquipego" />
 									<p:menuitem value="les sous types de document" icon="ui-icon-gear"
@@ -97,10 +95,12 @@
 							</p:submenu>
 							<p:separator />
 							<p:submenu label="Missions">
-								<p:menuitem value="Créer une mission" icon="ui-icon-gear"
-									action="missiongo" />
-								<p:menuitem value="Consulter les missions"
-									icon="ui-icon-gear" action="missionconsgo" />
+								<p:submenu label="Créer une mission" >
+									<p:menuitem value="Missions" icon="ui-icon-gear" action="missionADgo"/>
+									<p:menuitem value="Destinations" icon="ui-icon-gear" action="destinationgo"/>
+									<p:menuitem value="Les membres" icon="ui-icon-gear" action="MembreEquipego"/>
+									<p:menuitem value="Les pièces jointes" icon="ui-icon-gear" action="missionpjgo"/>
+								</p:submenu>
 							</p:submenu>
 							<p:submenu label="Documents">
 								<p:menuitem value="Les archives" icon="ui-icon-gear"
@@ -108,7 +108,7 @@
 								<p:menuitem value="Les sources"
 									icon="ui-icon-gear" action="sourcesgo" />
 								<p:menuitem value="Autres"
-									icon="ui-icon-gear" action="documentsgo" />
+									icon="ui-icon-gear" action="othersgo" />
 							</p:submenu>
 							<p:separator />
 

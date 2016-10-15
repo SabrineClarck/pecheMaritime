@@ -34,8 +34,21 @@ public class Consultation implements Serializable{
     public Consultation() {
     }
 
+    /**
+	 * @param dateConsultation
+	 * @param document
+	 * @param user
+	 */
+	public Consultation(Date dateConsultation, Document document, User user) {
+		super();
+		this.dateConsultation = dateConsultation;
+		this.document = document;
+		this.user = user;
+	}
 
-    @PostConstruct
+
+
+	@PostConstruct
     public void init(){
     	document = new Document();
     	user = new User();

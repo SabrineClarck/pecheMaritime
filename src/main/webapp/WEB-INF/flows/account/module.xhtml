@@ -106,14 +106,14 @@
 				</p:column>
 				
 				 <p:column style="width:40px;" headerText="Supprimer">
- 		<p:commandButton icon="ui-icon-trash"  actionListener="#{moduleService.delete(m)}" action="deleteModule" update=":dataM:message,:dataM:dataFullM">
+ 		<p:commandButton icon="ui-icon-trash"  actionListener="#{moduleService.delete(m)}" action="deleteModule" update=":dataM:message">
  		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
  		
  		</p:commandButton>
  </p:column>
  </p:dataTable>
  	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
-		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":dataM:message,:dataM:dataFullM"/>
+		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":dataM:message"/>
 		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
 		
 	</p:confirmDialog> 

@@ -31,7 +31,22 @@ public class Fonction implements Serializable {
     public Fonction() {
     }
 
-    @PostConstruct
+    
+    
+    /**
+	 * @param code
+	 * @param libelle
+	 * @param element
+	 */
+	public Fonction(int code, String libelle, Element element) {
+		this.code = code;
+		this.libelle = libelle;
+		this.element = element;
+	}
+
+
+
+	@PostConstruct
     public void init(){
     	element = new Element();
     }

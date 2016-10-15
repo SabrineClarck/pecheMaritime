@@ -20,7 +20,17 @@ public class Profil implements Serializable {
 
     public Profil() {
     }
-
+    
+	/**
+	 * @param code
+	 * @param libelle
+	 * @param privileges
+	 */
+	public Profil(String code, String libelle, Set<Privilege> privileges) {
+		this.code = code;
+		this.libelle = libelle;
+		this.privileges = privileges;
+	}
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

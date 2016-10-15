@@ -35,6 +35,28 @@ public class User implements Serializable {
     public User() {
     }
 
+	/**
+	 * @param cin
+	 * @param nom
+	 * @param ppr
+	 * @param prenom
+	 * @param accounts
+	 * @param consultations
+	 * @param membreequipes
+	 */
+	public User(String cin, String nom, BigDecimal ppr, String prenom,
+			Set<Account> accounts, Set<Consultation> consultations,
+			Set<Membreequipe> membreequipes) {
+		this.cin = cin;
+		this.nom = nom;
+		this.ppr = ppr;
+		this.prenom = prenom;
+		this.accounts = accounts;
+		this.consultations = consultations;
+		this.membreequipes = membreequipes;
+	}
+
+
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)

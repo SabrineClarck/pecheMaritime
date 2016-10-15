@@ -32,8 +32,23 @@ public class Account implements Serializable {
 
     public Account() {
     }
+    
+    /**
+	 * @param login
+	 * @param pw
+	 * @param user
+	 * @param profil
+	 */
+	public Account(String login, String pw, User user, Profil profil) {
+		this.login = login;
+		this.pw = pw;
+		this.user = user;
+		this.profil = profil;
+	}
 
-    @PostConstruct
+
+
+	@PostConstruct
     public void init(){
     	user = new User();
     	profil = new Profil();

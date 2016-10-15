@@ -31,7 +31,22 @@ public class Membreequipe implements Serializable{
     public Membreequipe() {
     }
 
-    @PostConstruct
+    
+    
+    /**
+	 * @param fonction
+	 * @param mission
+	 * @param user
+	 */
+	public Membreequipe(String fonction, Mission mission, User user) {
+		this.fonction = fonction;
+		this.mission = mission;
+		this.user = user;
+	}
+
+
+
+	@PostConstruct
     public void init(){
     	mission = new Mission();
     	user = new User();

@@ -29,6 +29,17 @@ public class Typepj implements Serializable{
     public Typepj() {
     }
 
+	/**
+	 * @param description
+	 * @param type
+	 * @param missionpjs
+	 */
+	public Typepj(String description, String type, Set<Missionpj> missionpjs) {
+		this.description = description;
+		this.type = type;
+		this.missionpjs = missionpjs;
+	}
+
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -69,6 +80,7 @@ public class Typepj implements Serializable{
 	}
 
 	public void setMissionpjs(Set<Missionpj> missionpjs) {
+		
 		this.missionpjs = missionpjs;
 	}
 	

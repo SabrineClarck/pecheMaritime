@@ -32,8 +32,24 @@ public class Destination implements Serializable {
 
     public Destination() {
     }
+    
+    /**
+	 * @param description
+	 * @param ville
+	 * @param entite
+	 * @param mission
+	 */
+	public Destination(String description, Ville ville, Entite entite,
+			Mission mission) {
+		this.description = description;
+		this.ville = ville;
+		this.entite = entite;
+		this.mission = mission;
+	}
 
-    @PostConstruct
+
+
+	@PostConstruct
     public void init(){
     	ville = new Ville();
     	entite = new Entite();

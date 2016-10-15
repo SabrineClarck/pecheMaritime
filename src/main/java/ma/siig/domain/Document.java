@@ -43,8 +43,29 @@ public class Document implements Serializable {
 
     public Document() {
     }
+    
+    /**
+	 * @param dateAjout
+	 * @param description
+	 * @param doc
+	 * @param titre
+	 * @param consultations
+	 * @param soustypedoc
+	 * @param missionpjs
+	 */
+	public Document(Date dateAjout, String description, byte[] doc,
+			String titre, Set<Consultation> consultations,
+			Soustypedoc soustypedoc, Set<Missionpj> missionpjs) {
+		this.dateAjout = dateAjout;
+		this.description = description;
+		this.doc = doc;
+		this.titre = titre;
+		this.consultations = consultations;
+		this.soustypedoc = soustypedoc;
+		this.missionpjs = missionpjs;
+	}
 
-    @PostConstruct
+	@PostConstruct
     public void init(){
     	soustypedoc = new Soustypedoc();
     }
@@ -131,6 +152,7 @@ public class Document implements Serializable {
 	}
 
 	public void setMissionpjs(Set<Missionpj> missionpjs) {
+		
 		this.missionpjs = missionpjs;
 	}
 	

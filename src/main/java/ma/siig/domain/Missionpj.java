@@ -18,12 +18,13 @@ import javax.persistence.TemporalType;
 
 
 
+
 /**
  * The persistent class for the missionpj database table.
  * 
  */
 @Entity
-@Table(name="missionpj")
+@Table(name="missionpj", catalog="siig")
 public class Missionpj implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private int idPj;
@@ -37,7 +38,25 @@ public class Missionpj implements Serializable{
     public Missionpj() {
     }
 
-    @PostConstruct
+    /**
+	 * @param dateAjout
+	 * @param description
+	 * @param titre
+	 * @param mission
+	 * @param typepj
+	 * @param document
+	 */
+	public Missionpj(Date dateAjout, String description, String titre,
+			Mission mission, Typepj typepj, Document document) {
+		this.dateAjout = dateAjout;
+		this.description = description;
+		this.titre = titre;
+		this.mission = mission;
+		this.typepj = typepj;
+		this.document = document;
+	}
+
+	@PostConstruct
     public void init(){
     	mission = new Mission();
     	typepj = new Typepj();

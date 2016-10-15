@@ -1,8 +1,5 @@
 package ma.siig.services.Impl;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -34,12 +31,13 @@ public class MissionServiceImpl implements MissionService {
 	public Mission save(Mission mission) {
 			
 			mission.setEtat(Etats.CR.toString());
-			if(missionDao.save(mission) != null){
+			Mission test = missionDao.save(mission);
+			if(test != null){
 			 FacesMessage msg = new FacesMessage("Mission bien enregistrée");
 				
 		        FacesContext.getCurrentInstance().addMessage(null, msg);
 			}
-		return missionDao.save(mission);
+		return test;
 	}
 
 	
@@ -50,19 +48,21 @@ public class MissionServiceImpl implements MissionService {
 
 	
 	public void delete(Mission mission) {
+		if(mission == null){
+			delete(mission);
+			return;
+		}
+		
 		if(mission.getEtat().equals(Etats.CR.toString())){
-			mission.setEtat(Etats.AN.toString());
+			missionDao.delete(mission);
 		}
 		if(mission.getEtat().equals(Etats.EN.toString()) && !rapportFinal(mission.getMissionpjs())){
-			mission.setEtat(Etats.EA.toString());
+			mission.setEtat(Etats.AE.toString());
+			update(mission);
 		}
 		if(mission.getEtat().equals(Etats.EN.toString()) && rapportFinal(mission.getMissionpjs())){
 			mission.setEtat(Etats.CL.toString());
-		}
-		
-		
-		if(mission.getEtat().equals(Etats.AN.toString())){
-		missionDao.delete(mission);
+			update(mission);
 		}
 		
 	}
@@ -79,40 +79,6 @@ public class MissionServiceImpl implements MissionService {
 		return missionDao.findAll();
 	}
 
-	
-	public List<Mission> updateList(){
-		
-		List<Mission> miss = findAll();
-		//1. on teste si l'état de la mission est crée
-		
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		Date date = new Date();
-		dateFormat.format(date);
-		
-		for(Mission m : miss){
-			if(isCree(m)){
-				
-				// si l'etat de la mission est bien crée on teste si aujourd'hui est le jour de début de la mission
-				if(date.equals(m.getDebut()) || date.after(m.getDebut())){
-					m.setEtat(Etats.EN.toString());
-					m = update(m);
-						}
-												}
-			
-			
-			if(isEnCours(m)){
-			  //2. on teste si l'etat de la mission est en cours
-				if(rapportFinal(m.getMissionpjs())){
-					// on teste si parmi les pièces jointes de la mission il y a la fiche ou le repport final.
-					m.setEtat(Etats.CL.toString());
-					m = update(m);
-													}	
-							}
-			
-							}
-		// on retourne la list des missions après modification
-		return miss;
-	}
 	
 
 	public void flush() {
@@ -145,7 +111,7 @@ public class MissionServiceImpl implements MissionService {
 
 	// méthode qui prend comme argument un Set<Typepj>, et qui retourne vrai ou faux
 	//vrai si la liste contient le type Rapport final,faux sinon
-	private boolean rapportFinal(Set<Missionpj> types){
+	public boolean rapportFinal(Set<Missionpj> types){
 		
 		Iterator<Missionpj> itr = types.iterator();
 		boolean decision = false;
@@ -186,7 +152,7 @@ public class MissionServiceImpl implements MissionService {
 		CR ("Crée"),
 		EN ("En cours"),
 		AN ("Annulée"),
-		EA ("En cours annulée"),
+		AE ("Annulée En cours"),
 		CL ("Clôturée");
 		
 		private String etat="";
@@ -199,6 +165,13 @@ public class MissionServiceImpl implements MissionService {
 			return etat;
 		}
 		
+	}
+
+
+
+	public List<Mission> updateList() {
+		
+		return missionDao.updateList();
 	}
 	
 	
