@@ -26,7 +26,11 @@ public class FonctionServiceImpl implements FonctionService {
 
 
 	public Fonction save(Fonction fonction) {
-		
+		if(fonction != null){
+			 FacesMessage msg = new FacesMessage("Fonction bien enregistrée");
+				
+		        FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
 		return fonctionDao.save(fonction);
 	}
 

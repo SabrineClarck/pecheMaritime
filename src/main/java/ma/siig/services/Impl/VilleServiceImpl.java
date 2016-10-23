@@ -41,10 +41,10 @@ public class VilleServiceImpl implements VilleService {
 
 
 	public Ville save(Ville ville) {
-		
+		if(ville != null){
 		 FacesMessage msg = new FacesMessage("Ville bien enregistrée", ville.getIntitule());
 	        FacesContext.getCurrentInstance().addMessage(null, msg);
-	        
+		}
 		return villeDao.save(ville);
 	}
 

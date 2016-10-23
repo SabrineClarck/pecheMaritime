@@ -15,9 +15,20 @@ public class MembreServiceImpl implements MembreService {
 
 	
 	private MemebreEDao membreDao;
+	private Membreequipe selectedMember;
 	
 	
 	
+	public void setSelectedMember(Membreequipe selectedMember) {
+		this.selectedMember = selectedMember;
+	}
+
+
+	public Membreequipe getSelectedMember() {
+		return selectedMember;
+	}
+
+
 	public MemebreEDao getMembreDao() {
 		return membreDao;
 	}

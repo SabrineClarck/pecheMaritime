@@ -26,9 +26,10 @@ public class TypemissionServiceImpl implements TypemissionService {
 
 
 	public Typemission save(Typemission typemission) {
+		if(typemission != null){
 		 FacesMessage msg = new FacesMessage("Type bien enregistrée ", typemission.getType());
 	        FacesContext.getCurrentInstance().addMessage(null, msg);
-		
+		}
 		return typemissionDao.save(typemission);
 	}
 

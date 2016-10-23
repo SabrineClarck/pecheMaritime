@@ -26,9 +26,10 @@ public class TypepjServiceImpl implements TypepjService {
 
 
 	public Typepj save(Typepj typepj) {
+		if(typepj != null){
 		 FacesMessage msg = new FacesMessage("Type bien enregistré ", typepj.getType());
 	        FacesContext.getCurrentInstance().addMessage(null, msg);
-	        
+		}
 		return typepjDao.save(typepj);
 	}
 

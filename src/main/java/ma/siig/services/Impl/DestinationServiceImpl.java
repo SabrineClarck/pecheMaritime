@@ -15,8 +15,19 @@ public class DestinationServiceImpl implements DestinationService {
 
 	
 	private DestinationDao destinationDao;
+	private Destination selectedDestination;
 	
 	
+	public void setSelectedDestination(Destination selectedDestination) {
+		this.selectedDestination = selectedDestination;
+	}
+
+
+	public Destination getSelectedDestination() {
+		return selectedDestination;
+	}
+
+
 	public void setDestinationDao(DestinationDao destinationDao) {
 		this.destinationDao = destinationDao;
 	}
@@ -28,7 +39,7 @@ public class DestinationServiceImpl implements DestinationService {
 
 
 	public Destination save(Destination destination) {
-		if(destinationDao.save(destination) != null){
+		if(destination != null){
 			 FacesMessage msg = new FacesMessage("Destination bien enregistrée");
 				
 		        FacesContext.getCurrentInstance().addMessage(null, msg);

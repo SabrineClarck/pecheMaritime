@@ -59,7 +59,6 @@ public class Mission implements Serializable {
 			String objet, String titre, Set<Destination> destinations,
 			Set<Membreequipe> membreequipes, Typemission typemission,
 			Set<Missionpj> missionpjs) {
-		super();
 		this.debut = debut;
 		this.detail = detail;
 		this.etat = etat;
@@ -150,7 +149,7 @@ public class Mission implements Serializable {
 
 
 	//bi-directional many-to-one association to Destination
-	@OneToMany(cascade = CascadeType.REMOVE,mappedBy="mission")
+	@OneToMany(cascade = CascadeType.REMOVE,fetch = FetchType.EAGER,mappedBy="mission")
 	public Set<Destination> getDestinations() {
 		return this.destinations;
 	}
@@ -161,7 +160,7 @@ public class Mission implements Serializable {
 	
 
 	//bi-directional many-to-one association to Membreequipe
-	@OneToMany(cascade = CascadeType.REMOVE,mappedBy="mission")
+	@OneToMany(cascade = CascadeType.REMOVE,fetch = FetchType.EAGER,mappedBy="mission")
 	public Set<Membreequipe> getMembreequipes() {
 		return this.membreequipes;
 	}
@@ -184,7 +183,7 @@ public class Mission implements Serializable {
 	
 
 	//bi-directional many-to-one association to Missionpj
-	@OneToMany(cascade=CascadeType.REMOVE,mappedBy="mission")
+	@OneToMany(cascade=CascadeType.REMOVE,fetch = FetchType.EAGER,mappedBy="mission")
 	public Set<Missionpj> getMissionpjs() {
 		return this.missionpjs;
 	}

@@ -25,6 +25,11 @@ public class SoustypedocServiceImpl implements SoustypedocService {
 
 	
 	public Soustypedoc save(Soustypedoc ss) {
+		if(ss != null){
+			 FacesMessage msg = new FacesMessage("Sous-type bien enregistré");
+				
+		        FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
 		
 		return soustypedocDao.save(ss);
 	}
@@ -63,7 +68,7 @@ public class SoustypedocServiceImpl implements SoustypedocService {
 		 Soustypedoc vi = new Soustypedoc();
 		 vi = (Soustypedoc) event.getObject();
 		 	update(vi);
-	        FacesMessage msg = new FacesMessage("Sous type modifié");
+	        FacesMessage msg = new FacesMessage("Sous-type modifié");
 	        FacesContext.getCurrentInstance().addMessage(null, msg);
 	    }
 	     

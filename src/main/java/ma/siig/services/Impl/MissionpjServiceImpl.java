@@ -16,8 +16,19 @@ public class MissionpjServiceImpl implements MissionpjService {
 
 	
 	private MissionpjDao missionpjDao;
+	private Missionpj selectedPiece;
 	
 	
+	public void setSelectedPiece(Missionpj selectedPiece) {
+		this.selectedPiece = selectedPiece;
+	}
+
+
+	public Missionpj getSelectedPiece() {
+		return selectedPiece;
+	}
+
+
 	public void setMissionpjDao(MissionpjDao missionpjDao) {
 		this.missionpjDao = missionpjDao;
 	}
@@ -29,7 +40,7 @@ public class MissionpjServiceImpl implements MissionpjService {
 
 
 	public Missionpj save(Missionpj missionpj) {
-		if(missionpjDao.save(missionpj) != null){
+		if(missionpj != null){
 			 FacesMessage msg = new FacesMessage("Pièce jointe bien enregistrée");
 				
 		        FacesContext.getCurrentInstance().addMessage(null, msg);

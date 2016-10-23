@@ -26,9 +26,10 @@ public class TypedocServiceImpl implements TypedocService {
 
 
 	public Typedoc save(Typedoc typedoc) {
+		if(typedoc != null){
 		FacesMessage msg = new FacesMessage("Type bien enregistré ", typedoc.getLibelle());
         FacesContext.getCurrentInstance().addMessage(null, msg);
-
+		}
 		return typedocDao.save(typedoc);
 	}
 

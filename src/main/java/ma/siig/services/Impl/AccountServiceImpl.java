@@ -29,7 +29,7 @@ public class AccountServiceImpl implements AccountService {
 
 	public Account save(Account account) {
 		
-		if(accountDao.save(account) != null){
+		if(account != null){
 			FacesMessage msg = new FacesMessage("Compte crée avec succès!");
 	        FacesContext.getCurrentInstance().addMessage(null, msg);
 			

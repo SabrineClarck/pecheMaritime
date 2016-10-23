@@ -26,8 +26,10 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 
 
 	public User save(User user) {
+		if(user != null){
 		 FacesMessage msg = new FacesMessage("Utilisateur bien enregistré ", user.getNom());
 	        FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
 		return utilisateurDao.save(user);
 	}
 

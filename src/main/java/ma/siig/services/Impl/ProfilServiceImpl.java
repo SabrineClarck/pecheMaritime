@@ -26,7 +26,11 @@ public class ProfilServiceImpl implements ProfilService {
 
 
 	public Profil save(Profil profil) {
-		
+		if(profil != null){
+			 FacesMessage msg = new FacesMessage("Profil bien enregistrée");
+				
+		        FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
 		return profilDao.save(profil);
 	}
 

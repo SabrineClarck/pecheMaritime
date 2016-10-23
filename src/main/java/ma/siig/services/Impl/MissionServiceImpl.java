@@ -17,7 +17,18 @@ import ma.siig.services.MissionService;
 public class MissionServiceImpl implements MissionService {
 
 	private MissionDao missionDao;
-	
+	private Mission selectedMission;
+
+	public void setSelectedMission(Mission selectedMission) {
+		this.selectedMission = selectedMission;
+	}
+
+
+	public Mission getSelectedMission() {
+		return selectedMission;
+	}
+
+
 	public void setMissionDao(MissionDao missionDao) {
 		this.missionDao = missionDao;
 	}

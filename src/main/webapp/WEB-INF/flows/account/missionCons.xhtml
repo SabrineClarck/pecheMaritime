@@ -11,110 +11,189 @@
 	<ui:define name="header">
 	</ui:define>
 
-		
-<ui:define name="content">
-		<h:form id="dataD">
-			<p:fieldset styleClass="fieldset" legend="Les missions">
-				
-				
-			<p:growl id="message" showDetail="true" />
 
-			<p:dataTable var="d" value="#{destinations}" id="dataFullD"
+	<ui:define name="content">
+		<h:form id="dataM">
+			<p:fieldset styleClass="fieldset" legend="Les missions">
+				<p:growl id="msg" showDetail="true" />
+
+
+			<p:dataTable var="d" value="#{missions}" id="dataFullM"
 				paginator="true" rows="10"
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-				rowsPerPageTemplate="5,10,15" editable="true"
-				style="margin-bottom:20px">
+				rowsPerPageTemplate="5,10,15" style="margin-bottom:20px">
 
-				<p:ajax event="rowEdit" listener="#{destinationService.onRowEdit}"
-					update=":dataD:message" />
-				<p:ajax event="rowEditCancel"
-					listener="#{destinationService.onRowCancel}" update=":dataD:message" />
-
-
-				<p:column headerText="Id" filterBy="#{d.idDestination}"
+				<p:column headerText="Id" filterBy="#{d.idMission}"
 					filterMatchMode="exact">
-					<h:outputText value="#{d.idDestination}" />
-				</p:column>
-				
-
-				<p:column headerText="Entité" filterBy="#{d.entite.intitule}"
-					filterMatchMode="contains">
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{d.entite.intitule}" />
-						</f:facet>
-				 	<f:facet name="input">
-							<h:selectOneMenu value="#{d.entite.idEntite}"
-								style="width:100%">
-								<f:selectItems value="#{entites}" var="c"
-									itemLabel="#{c.intitule}" itemValue="#{c.idEntite}" />
-							</h:selectOneMenu>
-						</f:facet> 
-					</p:cellEditor>
-				</p:column>
-				
-				<p:column headerText="Ville" filterBy="#{d.ville.intitule}"
-					filterMatchMode="contains">
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{d.ville.intitule}" />
-						</f:facet>
-				 	<f:facet name="input">
-							<h:selectOneMenu value="#{d.ville.idVille}"
-								style="width:100%">
-								<f:selectItems value="#{villes}" var="c"
-									itemLabel="#{c.intitule}" itemValue="#{c.idVille}" />
-							</h:selectOneMenu>
-						</f:facet> 
-					</p:cellEditor>
-				</p:column>
-				
-				<p:column headerText="Mission" filterBy="#{d.mission.titre}"
-					filterMatchMode="contains">
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{d.mission.titre}" />
-						</f:facet>
-				 	<f:facet name="input">
-							<h:selectOneMenu value="#{d.mission.idMission}"
-								style="width:100%">
-								<f:selectItems value="#{missions}" var="c"
-									itemLabel="#{c.titre}" itemValue="#{c.idMission}" />
-							</h:selectOneMenu>
-						</f:facet> 
-					</p:cellEditor>
+					<h:outputText value="#{d.idMission}" />
 				</p:column>
 
-				<p:column headerText="Description" filterBy="#{d.description}"
+				<p:column headerText="Titre" filterBy="#{d.titre}"
 					filterMatchMode="contains">
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{d.description}" />
-						</f:facet>
-						<f:facet name="input">
-							<p:inputText value="#{d.description}" />
-						</f:facet>
-					</p:cellEditor>
+					<h:outputText value="#{d.titre}" />
 				</p:column>
 
-				<p:column style="width:40px;" headerText="Modifier">
-					<p:rowEditor />
+				<p:column headerText="Type" filterBy="#{d.typemission.type}"
+					filterMatchMode="contains">
+					<h:outputText value="#{d.typemission.type}" />
 				</p:column>
+
+				<p:column headerText="Etat" filterBy="#{d.etat}"
+					filterMatchMode="contains">
+					<h:outputText value="#{d.etat}" />
+				</p:column>
+
+				<p:column style="width:32px;text-align: center">
+					<p:commandButton update=":dataM:tabMission" oncomplete="PF('missionDialog').show()"
+					icon="ui-icon-search" title="View">
+						<f:setPropertyActionListener value="#{d}" target="#{missionService.selectedMission}"/>
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+			<p:commandButton id="backHome" action="backHome" immediate="true"
+						icon="ui-icon-home" value="Accueil" />
+			</p:fieldset>
+			<p:dialog header="Mission Info" widgetVar="missionDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false" fitViewport="true">
 				
-				 <p:column style="width:40px;" headerText="Supprimer">
- 		<p:commandButton icon="ui-icon-trash"  actionListener="#{mService.delete(d)}" action="deleteDestination" update=":dataD:message,:dataD:dataFullD">
- 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
- 		
- 		</p:commandButton>
- </p:column>
- </p:dataTable>
- 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
-		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":dataD:message,:dataD:dataFullD"/>
-		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
-		
-	</p:confirmDialog> 
+				<p:tabView id="tabMission">
+					<p:tab title="La mission">
+						<h:panelGrid columns="2" cellpadding="10">
+								<h:outputText value="Id : " style="font-weight: bold; font-size:18px"/>
+								<h:outputText value="#{missionService.selectedMission.idMission}" style="font-size:18px"/>
+								
+								<h:outputText value="Le type : " style="font-weight: bold; font-size:18px"/>
+								<h:outputText value="#{missionService.selectedMission.typemission.type}" style="font-size:18px"/>
+								
+								<h:outputText value="Le titre : " style="font-weight: bold; font-size:18px"/>
+								<h:outputText value="#{missionService.selectedMission.titre}" style="font-size:18px"/>
+								
+								<h:outputText value="Date début : " style="font-weight: bold; font-size:18px"/>
+								<h:outputText value="#{missionService.selectedMission.debut}" style="font-size:18px"/>
+								
+								<h:outputText value="Date fin : " style="font-weight: bold; font-size:18px"/>
+								<h:outputText value="#{missionService.selectedMission.fin}" style="font-size:18px"/>
+								
+								<h:outputText value="L'objet : " style="font-weight: bold;font-size:18px"/>
+								<h:outputText value="#{missionService.selectedMission.objet}" style="font-size:18px"/>
+								
+								<h:outputText value="Détail : " style="font-weight: bold;font-size:18px"/>
+								<h:outputText value="#{missionService.selectedMission.detail}" style="font-size:18px"/>
+								
+								<h:outputText value="L'état : " style="font-weight: bold;font-size:18px"/>
+								<h:outputText value="#{missionService.selectedMission.etat}" style="font-size:18px"/>
+						</h:panelGrid>
+					</p:tab>
+					
+					<p:tab title="Les membres">
+						
+							<p:dataList value="#{missionService.selectedMission.membreequipes.toArray()}" var="membre" itemType="none" 
+							paginator="true" rows="10" styleClass="paginated">
+								<p:commandLink update=":dataM:tabMission" oncomplete="PF('membreDialog').show()" 
+								title="Informations membre" styleClass="ui-icon ui-icon-search" style="float:left;margin-right:5px">
+									<f:setPropertyActionListener value="#{membre}" target="#{membreService.selectedMember}"/>
+									<h:outputText value="#{membre.user.nom}, #{membre.user.prenom}"/>
+								</p:commandLink>
+								<h:outputText value="#{membre.user.nom}, #{membre.user.prenom}" style="display:inline-block"/>
+							</p:dataList> 
+						
+						<p:dialog header="Membre Info" widgetVar="membreDialog" modal="false" showEffect="explode" hideEffect="bounce" appendTo="@(body)" resizable="false" fitViewport="true">
+							<p:outputPanel id="membreDetail" style="text-align:center">
+								<p:panelGrid columns="2" rendered="#{not empty membreService.selectedMember}" columnClasses="label,value" cellpadding="10">
+									<h:outputText value="Id: " style="font-weight : bold"/>
+									<h:outputText value="#{membreService.selectedMember.idMe}"/>
+									
+									<h:outputText value="Nom: " style="font-weight : bold"/>
+									<h:outputText value="#{membreService.selectedMember.user.nom}"/>
+									
+									<h:outputText value="Prénom: " style="font-weight : bold"/>
+									<h:outputText value="#{membreService.selectedMember.user.prenom}"/>
+									
+									<h:outputText value="Fonction: " style="font-weight : bold"/>
+									<h:outputText value="#{membreService.selectedMember.fonction}"/>
+									
+									<h:outputText value="CIN: " style="font-weight : bold"/>
+									<h:outputText value="#{membreService.selectedMember.user.cin}"/>
+								</p:panelGrid>
+							</p:outputPanel>
+						</p:dialog>
+					</p:tab>
+					
+					<p:tab title="Les pièces jointes">
+					<p:dataList value="#{missionService.selectedMission.missionpjs.toArray()}" var="piece" itemType="none" 
+							paginator="true" rows="10" styleClass="paginated">
+								<p:commandLink update=":dataM:tabMission" oncomplete="PF('pieceDialog').show()" 
+								title="Informations Pièce jointe" styleClass="ui-icon ui-icon-search" style="float:left;margin-right:5px">
+									<f:setPropertyActionListener value="#{piece}" target="#{missionpjService.selectedPiece}"/>
+									<h:outputText value="#{piece.dateAjout}, #{piece.titre}"/>
+								</p:commandLink>
+								<h:outputText value="#{piece.dateAjout}, #{piece.titre}" style="display:inline-block"/>
+							</p:dataList> 
 				
-		</p:fieldset>
+						
+						<p:dialog header="Pièce Info" widgetVar="pieceDialog" modal="false" showEffect="explode" hideEffect="bounce" appendTo="@(body)" resizable="false" fitViewport="true">
+							<p:outputPanel id="pieceDetail" style="text-align:center">
+								<p:panelGrid columns="2" rendered="#{not empty missionpjService.selectedPiece}" columnClasses="label,value" cellpadding="10">
+									<h:outputText value="Id: " style="font-weight : bold"/>
+									<h:outputText value="#{missionpjService.selectedPiece.idPj}"/>
+									
+									<h:outputText value="Titre: " style="font-weight : bold"/>
+									<h:outputText value="#{missionpjService.selectedPiece.titre}"/>
+									
+									<h:outputText value="Date d'ajout: " style="font-weight : bold"/>
+									<h:outputText value="#{missionpjService.selectedPiece.dateAjout}"/>
+									
+									<h:outputText value="Description: " style="font-weight : bold"/>
+									<h:outputText value="#{missionpjService.selectedPiece.description}"/>
+									
+									<h:outputText value="Type de pièce: " style="font-weight : bold"/>
+									<h:outputText value="#{missionpjService.selectedPiece.typepj}"/>
+								</p:panelGrid>
+							</p:outputPanel>
+						</p:dialog>
+							
+					</p:tab>
+					
+					<p:tab title="Les destinations">
+						
+						<p:dataList value="#{missionService.selectedMission.destinations.toArray()}" var="destination" itemType="none" 
+							paginator="true" rows="10" styleClass="paginated">
+								<p:commandLink update=":dataM:tabMission" oncomplete="PF('destinationDialog').show()" 
+								title="Informations Destination" styleClass="ui-icon ui-icon-search" style="float:left;margin-right:5px">
+									<f:setPropertyActionListener value="#{destination}" target="#{destinationService.selectedDestination}"/>
+									<h:outputText value="#{destination.ville.intitule}"/>
+								</p:commandLink>
+								<h:outputText value="#{destination.ville.intitule}" style="display:inline-block"/>
+							</p:dataList> 
+				<!-- 
+				private int idDestination;
+	private String description;
+	private Ville ville;
+	private Entite entite;
+	private Mission mission; -->
+						
+						<p:dialog header="Destination Info" widgetVar="destinationDialog" modal="false" showEffect="explode" hideEffect="bounce" appendTo="@(body)" resizable="false" fitViewport="true">
+							<p:outputPanel id="destinationDetail" style="text-align:center">
+								<p:panelGrid columns="2" rendered="#{not empty destinationService.selectedDestination}" columnClasses="label,value" cellpadding="10">
+									<h:outputText value="Id: " style="font-weight : bold"/>
+									<h:outputText value="#{destinationService.selectedDestination.idDestination}"/>
+									
+									<h:outputText value="Ville: " style="font-weight : bold"/>
+									<h:outputText value="#{destinationService.selectedDestination.ville.intitule}"/>
+									
+									<h:outputText value="Entité: " style="font-weight : bold"/>
+									<h:outputText value="#{destinationService.selectedDestination.entite.intitule}"/>
+									
+									<h:outputText value="Description: " style="font-weight : bold"/>
+									<h:outputText value="#{destinationService.selectedDestination.description}"/>
+									
+								
+								</p:panelGrid>
+							</p:outputPanel>
+						</p:dialog>
+							
+					</p:tab>
+				</p:tabView>
+			</p:dialog>
 		</h:form>
 
 	</ui:define>

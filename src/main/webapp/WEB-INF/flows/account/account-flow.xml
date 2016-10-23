@@ -68,6 +68,8 @@
 		<transition on="othersgo" to="documentsPage"/>
 				
 		<transition on="destinationgo" to="destinationPage"/>
+		
+		<transition on="missionConsgo" to="missionConsPage"/>
 	</view-state>
 <!-- *********************************************Les pages secondaires***************************************** -->
 
@@ -364,7 +366,7 @@
 	<!--  							 **
 								*****
 	********************************************************************************  -->
-	<view-state id="membrePage" view="MembreEquipe.xhtml" model="membre">
+	<view-state id="membrePage" view="MembreEquipe.xhtml" model="mem">
 		<var name="mem" class="ma.siig.domain.Membreequipe"/>
 		<on-entry>
 			<evaluate expression="utilisateurService.findAll()" result="flowScope.users"/>
@@ -482,6 +484,11 @@
 		</transition>
 	</view-state>
 
+	<!--  							 **
+								*****
+	********************************************************************************  -->
+	
+	
 	<!--  							 **
 								*****
 	********************************************************************************  -->

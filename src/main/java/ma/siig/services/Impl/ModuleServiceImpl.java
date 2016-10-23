@@ -26,7 +26,11 @@ public class ModuleServiceImpl implements ModuleService {
 
 
 	public Module save(Module module) {
-		
+		if(module != null){
+			 FacesMessage msg = new FacesMessage("Profil bien enregistrée");
+				
+		        FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
 		return moduleDao.save(module);
 	}
 

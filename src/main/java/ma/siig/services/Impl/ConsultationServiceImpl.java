@@ -28,7 +28,11 @@ public class ConsultationServiceImpl implements ConsultationService {
 
 
 	public Consultation save(Consultation consultation) {
-		
+		if(consultation != null){
+			 FacesMessage msg = new FacesMessage("Consultation bien enregistrée");
+				
+		        FacesContext.getCurrentInstance().addMessage(null, msg);
+		}
 		return consultationDao.save(consultation);
 	}
 
