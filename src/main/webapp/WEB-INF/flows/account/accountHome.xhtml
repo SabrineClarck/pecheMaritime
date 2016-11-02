@@ -18,19 +18,13 @@
 
 
 	<ui:define name="content">
-	<h:form>
-	<p:fieldset styleClass="fieldset" legend="Bienvenue">
-	<p:galleria value="" var="image" panelWidth="700" panelHeight="313" showCaption="true">
-    <p:graphicImage name="/images/" alt="Image Description for" title=""/>
-</p:galleria>
-</p:fieldset>
-</h:form>
-	<!--  	<f:metadata>
+	
+	<f:metadata>
 			<f:event type="postAddToView" listener="#{uiUtils.greetOnViewLoad}" update="growlMessage"/>
-			<f:attribute name="firstName" value="#{user.firstName}" />
-			<f:attribute name="lastName" value="#{user.lastName}" />
+			<f:attribute name="firstName" value="#{account.user.nom}" />
+			<f:attribute name="lastName" value="#{account.user.prenom}" />
 					
-		</f:metadata> -->
+		</f:metadata> 
 
 		
 		</ui:define>

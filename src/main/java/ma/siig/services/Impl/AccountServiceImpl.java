@@ -1,17 +1,25 @@
 package ma.siig.services.Impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.RowEditEvent;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import ma.siig.dao.AccountDao;
 import ma.siig.domain.Account;
 import ma.siig.services.AccountService;
 
-public class AccountServiceImpl implements AccountService {
+public class AccountServiceImpl implements AccountService, UserDetailsService {
 
 	private AccountDao accountDao;
 	
@@ -82,5 +90,30 @@ public class AccountServiceImpl implements AccountService {
 	        FacesMessage msg = new FacesMessage("Modification annulée");
 	        FacesContext.getCurrentInstance().addMessage(null, msg);
 	    }
+
+
+		
+		public Account loadUserEntityByUsername(String userName) {
+
+			return accountDao.loadUserByUserName(userName);
+		}
+
+
+		
+		public UserDetails loadUserByUsername(String userName)
+				throws UsernameNotFoundException {
+			Account account = accountDao.loadUserByUserName(userName);
+			
+			if(account == null){
+				throw new UsernameNotFoundException("Il n'y a pas de compte associé au login entré");
+			}
+			
+			Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+			authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+			
+			User accountDetails = new User(account.getLogin(), account.getPw(), authorities);
+			
+			return accountDetails;
+		}
 	
 }

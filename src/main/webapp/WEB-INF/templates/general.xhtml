@@ -30,8 +30,8 @@
 
 
 		<div id="container">
-	<!--  		<div id="greeting">
-				 the field currentUser is a spring security component -->
+			<div id="greeting">
+			<!--   the field currentUser is a spring security component -->
 				<c:if test="${not empty currentUser.name}">
 					<b>Welcome,</b>  |
 						<a href="${request.contextPath}/app/logout"> <img
@@ -40,7 +40,7 @@
 
 				</c:if>
 			
-
+				</div>
 			<div id="header">
 				<h1>
 					<ui:insert name="header" />
@@ -120,14 +120,17 @@
 					
 					
 					
-					<ui:insert name="content" />
+				 	<ui:insert name="content" /> 
+				 	
 					</div>
-				</div>
+				
 				
 			
 			<div id="footer">
 				<ui:insert name="footer" />
 			</div>
+	
+	</div>
 	</div>
 	</h:body>
 </f:view>

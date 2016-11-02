@@ -12,5 +12,6 @@ public interface AccountDao {
 	public Account findById(Integer id);
 	public List<Account> findAll();
 	public void flush();
+	public Account loadUserByUserName(String userName);
 	
 }

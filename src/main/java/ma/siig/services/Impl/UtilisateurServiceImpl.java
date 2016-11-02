@@ -6,7 +6,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import org.primefaces.event.RowEditEvent;
-
 import ma.siig.dao.UtilisateurDao;
 import ma.siig.domain.User;
 import ma.siig.services.UtilisateurService;
@@ -81,5 +80,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
 		FacesMessage msg = new FacesMessage("Modification annulée ",((User) event.getObject()).getNom());
 		 FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
-
+	
+	
 }

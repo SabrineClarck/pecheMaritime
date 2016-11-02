@@ -1,6 +1,6 @@
 package ma.siig.services;
 
-import ma.siig.domain.UserEntity;
+import ma.siig.domain.Account;
 
 /**
  * provides processing service to set user authentication session
@@ -18,6 +18,6 @@ public interface UserAuthenticationProviderService {
 	 * @return
 	 */
 	
-	public boolean processUserAuthentication(UserEntity user);
+	public boolean processUserAuthentication(Account account);
 	
 }

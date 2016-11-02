@@ -3,7 +3,9 @@ package ma.siig.daoImpl;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -77,6 +79,22 @@ public class AccountDaoImpl implements AccountDao {
 	public void flush() {
 			
 			getEntityManager().flush();
+	}
+
+
+	
+	public Account loadUserByUserName(String userName) {
+			Account account = null;
+			
+			Query qr = getEntityManager().createQuery("select a from "+Account.class.getSimpleName()+" a where a.login = :userName").setParameter("userName", userName);
+			
+			try{
+				account = (Account) qr.getSingleResult();
+			}catch(NoResultException e){
+				//do nothing
+			}
+			
+		return account;
 	}
 
 }

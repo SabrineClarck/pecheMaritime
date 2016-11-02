@@ -6,7 +6,7 @@
 	
 	<import resource="datasource-config.xml" />
 	<import resource="webflow-config.xml" />	
-	<!--   <import resource="security-config.xml" /> -->
+	  <import resource="security-config.xml" /> 
 	
 	<!-- DAO declarations -->
 	
@@ -34,9 +34,9 @@
 	
 	<!--  Services declarations , for injections by spring-->
 	
-	<!-- <bean id="userService" class="ma.siig.services.Impl.UserServiceImpl">
-		<property name="userDao" ref="userDao"/>
-	</bean>  -->
+	 <bean id="utilisateurService" class="ma.siig.services.Impl.UtilisateurServiceImpl">
+		<property name="utilisateurDao" ref="utilisateurDao"/>
+	</bean>  
 	
 	<bean id="membreService" class="ma.siig.services.Impl.MembreServiceImpl">
 		<property name="membreDao" ref="membreDao"/>
@@ -102,18 +102,16 @@
 		<property name="villeDao" ref="villeDao"/>
 	</bean>
 	
-	<bean id="utilisateurService" class="ma.siig.services.Impl.UtilisateurServiceImpl">
-		<property name="utilisateurDao" ref="utilisateurDao"/>
-	</bean>  
+	 
 	
 	<bean id="elementService" class="ma.siig.services.Impl.ElementServiceImpl">
 		<property name="elementDao" ref="elementDao"/>
 	</bean>
 	
 	<!--       for the spring security configurating   -->
-	<!--  <bean id="userAuthenticationProviderService" class="ma.siig.services.Impl.UserAuthenticationProviderServiceImpl">
+ <bean id="userAuthenticationProviderService" class="ma.siig.services.Impl.UserAuthenticationProviderServiceImpl">
 		<property name="authenticationManager" ref="authenticationManager"/>
-	</bean> -->
+	</bean> 
 	
 	
 </beans>

@@ -16,4 +16,5 @@ public interface AccountService {
 	public void flush();
 	 public void onRowEdit(RowEditEvent event);
 	 public void onRowCancel(RowEditEvent event);
+	 public Account loadUserEntityByUsername(String userName);
 }

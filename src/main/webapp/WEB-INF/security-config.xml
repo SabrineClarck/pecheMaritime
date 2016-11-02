@@ -8,7 +8,7 @@
 	   		http://www.springframework.org/schema/security
 	   		http://www.springframework.org/schema/security/spring-security.xsd">
 	   		
-	   		<!--  
+	   		 
 	   		
 	<security:http auto-config="true">
 		<security:form-login login-page="/app/main" default-target-url="/app/account" />
@@ -16,13 +16,13 @@
 	</security:http>
 	
 	<security:authentication-manager>
-		<security:authentication-provider user-service-ref="userService">
+		<security:authentication-provider user-service-ref="accountService">
 			<security:password-encoder hash="md5" />
 		</security:authentication-provider>
 	</security:authentication-manager>
 	
 	<bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
-		<property name="userDetailsService" ref="userService" />
+		<property name="userDetailsService" ref="accountService" />
 		<property name="hideUserNotFoundExceptions" value="false" />
 	</bean>
 	
@@ -31,5 +31,5 @@
 			<ref local="daoAuthenticationProvider" />
 		</constructor-arg>
 	</bean>
-	   	-->	
+	   	
 </beans>

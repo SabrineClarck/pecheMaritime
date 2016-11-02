@@ -9,17 +9,16 @@
 	
 	<!-- here the roles that has the access to the page account, in real
 	app, the roles will be in a table and it should do something about it -->
-	<!--  		<secured attributes="ROLE_USER"/> -->
+			<secured attributes="ROLE_USER"/> 
 
-<!-- 	<var name="uiUtils" class="ma.siig.ui.utils.UIUtils"/> -->
+ 	<var name="uiUtils" class="ma.siig.ui.utils.UIUtils"/>
 
-<!-- 	<on-start>
-	this following expression will load the name of the current username, which is provided by spring security
-		the flowScope, means that the variable will be available in all the flows until the flow is destroyed
-	 -->
+	<on-start>
+	<!--  this following expression will load the name of the current username, which is provided by spring security
+		the flowScope, means that the variable will be available in all the flows until the flow is destroyed -->
 	 
-	<!--  	<evaluate expression="userService.loadUserEntityByUsername(currentUser.name)" result="flowScope.user"/>
-	</on-start> -->
+	 	<evaluate expression="accountService.loadUserEntityByUsername(currentUser.name)" result="flowScope.account"/>
+	</on-start> 
 <!-- *********************************************La page principale***************************************** -->
 	
 	<view-state id="home" view="accountHome.xhtml">
