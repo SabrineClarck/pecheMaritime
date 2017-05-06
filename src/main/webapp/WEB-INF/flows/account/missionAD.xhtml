@@ -15,9 +15,9 @@
 	<ui:define name="content">
 		<h:form id="missForm">
 			<p:fieldset styleClass="fieldset" legend="Les missions">
-				<p:growl id="msg" showDetail="true"/>
+				<p:growl id="msg" showDetail="true" />
 
-
+				<!--  
 				<h:panelGrid id="missPanelGrid"
 					style="margin: 0 auto; margin-top: 25px; text-align: right"
 					cellspacing="8" columns="3">
@@ -88,128 +88,70 @@
 				</h:panelGrid>
 			</p:fieldset>
 		</h:form>
-		
-		<h:form id="dataM">
-				<p:growl id="msg" showDetail="true"/>
-				
+		-->
 
-			<p:dataTable var="d" value="#{missions}" id="dataFullM"
-				paginator="true" rows="10"
-				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-				rowsPerPageTemplate="5,10,15" editable="true"
-				style="margin-bottom:20px">
-
-				<p:ajax event="rowEdit" listener="#{missionService.onRowEdit}"
-					update=":dataM:msg" />
-				<p:ajax event="rowEditCancel"
-					listener="#{missionService.onRowCancel}" update=":dataM:msg" />
+				<p:dataTable var="d" value="#{missions}" id="dataFullM"
+					paginator="true" rows="10"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="5,10,15" style="margin-bottom:20px">
 
 
-				<p:column headerText="Id" filterBy="#{d.idMission}"
-					filterMatchMode="exact">
-					<h:outputText value="#{d.idMission}" />
-				</p:column>
-				
-				<p:column headerText="Titre" filterBy="#{d.titre}"
-					filterMatchMode="contains">
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{d.titre}" />
-						</f:facet>
-						<f:facet name="input">
-							<p:inputText value="#{d.titre}" />
-						</f:facet>
-					</p:cellEditor>
-				</p:column>
+					<p:column headerText="Id" filterBy="#{d.idMission}"
+						filterMatchMode="exact">
+						<h:outputText value="#{d.idMission}" />
+					</p:column>
 
-				<p:column headerText="Type" filterBy="#{d.typemission.type}"
-					filterMatchMode="contains">
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{d.typemission.type}" />
-						</f:facet>
-				 	<f:facet name="input">
-							<h:selectOneMenu value="#{d.typemission.idType}"
-								style="width:100%">
-								<f:selectItems value="#{types}" var="c"
-									itemLabel="#{c.type}" itemValue="#{c.idType}" />
-							</h:selectOneMenu>
-						</f:facet> 
-					</p:cellEditor>
-				</p:column>
-				
-			<p:column headerText="Date de début" filterBy="#{d.debut}"
-					filterMatchMode="contains">
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{d.debut}" />
-						</f:facet>
-						<f:facet name="input">
-							<p:inputText value="#{d.debut}" />
-						</f:facet>
-					</p:cellEditor>
-				</p:column>
-				
-				<p:column headerText="Date de fin" filterBy="#{d.fin}"
-					filterMatchMode="contains">
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{d.fin}" />
-						</f:facet>
-						<f:facet name="input">
-							<p:inputText value="#{d.fin}" />
-						</f:facet>
-					</p:cellEditor>
-				</p:column>
+					<p:column headerText="Titre" filterBy="#{d.titre}"
+						filterMatchMode="contains">
+						<h:outputText value="#{d.titre}" />
+					</p:column>
 
-				<p:column headerText="Objet" filterBy="#{d.objet}"
-					filterMatchMode="contains">
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{d.objet}" />
-						</f:facet>
-						<f:facet name="input">
-							<p:inputText value="#{d.objet}" />
-						</f:facet>
-					</p:cellEditor>
-				</p:column>
+					<p:column headerText="Type" filterBy="#{d.typemission.type}"
+						filterMatchMode="contains">
+						<h:outputText value="#{d.typemission.type}" />
+					</p:column>
 
-				<p:column headerText="Etat" filterBy="#{d.etat}"
-					filterMatchMode="contains">
-							<h:outputText value="#{d.etat}" />
-						
-				</p:column>
+					<p:column headerText="Date de début" filterBy="#{d.debut}"
+						filterMatchMode="contains">
 
-				<p:column headerText="Détail" filterBy="#{d.detail}"
-					filterMatchMode="contains">
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{d.detail}" />
-						</f:facet>
-						<f:facet name="input">
-							<p:inputText value="#{d.detail}" />
-						</f:facet>
-					</p:cellEditor>
-				</p:column>
+						<h:outputText value="#{d.debut}" />
 
-				<p:column style="width:40px;" headerText="Modifier">
-					<p:rowEditor />
-				</p:column>
-				
-				 <p:column style="width:40px;" headerText="Supprimer">
- 		<p:commandButton icon="ui-icon-trash"  actionListener="#{missionService.delete(d)}" action="deletemission" update=":dataM:msg">
- 		 	<p:confirm header="Confirmation" message="Etes vous sûr?" icon="ui-icon-alert"/> 
- 		
- 		</p:commandButton>
- </p:column>
- </p:dataTable>
- 	<p:confirmDialog global="true" showEffect="explode" hideEffect="explode">
-		<p:commandButton value="Oui" type="button"   styleClass="ui-confirmdialog-yes" icon="ui-icon-check" update=":dataM:msg"/>
-		<p:commandButton value="Non" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
-		
-	</p:confirmDialog> 
-				
+					</p:column>
+
+					<p:column headerText="Date de fin" filterBy="#{d.fin}"
+						filterMatchMode="contains">
+
+						<h:outputText value="#{d.fin}" />
+
+					</p:column>
+
+					<p:column headerText="Objet" filterBy="#{d.objet}"
+						filterMatchMode="contains">
+
+						<h:outputText value="#{d.objet}" />
+
+					</p:column>
+
+					<p:column headerText="Etat" filterBy="#{d.etat}"
+						filterMatchMode="contains">
+						<h:outputText value="#{d.etat}" />
+
+					</p:column>
+
+					<p:column headerText="Détail" filterBy="#{d.detail}"
+						filterMatchMode="contains">
+
+						<h:outputText value="#{d.detail}" />
+
+					</p:column>
+
+				</p:dataTable>
+				<p:commandButton id="backHome" action="backHome" immediate="true"
+					icon="ui-icon-home" value="Accueil" />
+			</p:fieldset>
+
 		</h:form>
+
 
 	</ui:define>
 

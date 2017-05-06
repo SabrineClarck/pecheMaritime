@@ -33,10 +33,21 @@
 			<div id="greeting">
 			<!--   the field currentUser is a spring security component -->
 				<c:if test="${not empty currentUser.name}">
-					<b>Welcome,</b>  |
+				<h:form>
+   
+ 
+    <p:menuButton value="Options">
+        <p:menuitem value="Mon compte" action="moncompte" icon="ui-icon-person"/>
+        <p:menuitem value="Homepage" action="homego" icon="ui-icon-home"/>
+        <p:separator />
+        <p:menuitem value="Se déconnecter" icon="ui-icon-extlink" url="${request.contextPath}/app/logout"/>
+    </p:menuButton>
+</h:form>
+				
+			<!--  		<b>Welcome,</b>  |
 						<a href="${request.contextPath}/app/logout"> <img
 						src="${request.contextPath}/resources/css/images/logout.png"
-						alt="" title="Logout" /> </a>
+						alt="" title="Logout" /> </a> -->
 
 				</c:if>
 			
@@ -90,8 +101,7 @@
 									action="fonctiongo" />
 									<p:menuitem value="Les éléments" icon="ui-icon-gear"
 									action="elementgo" />
-									<p:menuitem value="Consultation" icon="ui-icon-gear"
-									action="consultationgo" />
+									
 							</p:submenu>
 							<p:separator />
 							<p:submenu label="Missions">
@@ -108,8 +118,10 @@
 							<p:submenu label="Documents">
 								<p:menuitem value="Les archives" icon="ui-icon-gear"
 									action="archivesgo" />
-								<p:menuitem value="Les sources"
+								<p:menuitem value="Les ressources"
 									icon="ui-icon-gear" action="sourcesgo" />
+								<p:menuitem value="Les modèles de document"
+									icon="ui-icon-gear" action="modelesgo" />
 								<p:menuitem value="Autres"
 									icon="ui-icon-gear" action="othersgo" />
 							</p:submenu>

@@ -36,22 +36,6 @@ public class EntiteServiceImpl implements EntiteService {
 	}
 	
 
-/**
- * 
- *
- 
-	public Entite save(Entite entite, Ville v) {
-		entite.setVille(v);
-		
-		if(entiteDao.save(entite) != null){
-		 FacesMessage msg = new FacesMessage("Entité bien enregistrée", entite.getIntitule());
-			
-	        FacesContext.getCurrentInstance().addMessage(null, msg);
-		}
-	        return entite;
-	}
-
-	**/
 	public Entite update(Entite entite) {
 		
 		return entiteDao.update(entite);

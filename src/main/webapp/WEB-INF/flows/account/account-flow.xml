@@ -15,7 +15,7 @@
 
 	<on-start>
 	<!--  this following expression will load the name of the current username, which is provided by spring security
-		the flowScope, means that the variable will be available in all the flows until the flow is destroyed -->
+		the viewScope, means that the variable will be available in all the flows until the flow is destroyed -->
 	 
 	 	<evaluate expression="accountService.loadUserEntityByUsername(currentUser.name)" result="flowScope.account"/>
 	</on-start> 
@@ -23,6 +23,10 @@
 	
 	<view-state id="home" view="accountHome.xhtml">
 		<transition on="villego" to="villePage"/>
+		
+		<transition on="homego" to="home"/>
+		
+		<transition on="moncompte" to="moncompte"/>
 		
 		<transition on="entitego" to="entitePage"/>
 		
@@ -64,6 +68,8 @@
 		
 		<transition on="sourcesgo" to="sourcesPage"/>
 		
+		<transition on="modelesgo" to="modelesPage"/>
+		
 		<transition on="othersgo" to="documentsPage"/>
 				
 		<transition on="destinationgo" to="destinationPage"/>
@@ -75,16 +81,24 @@
 	<view-state id="villePage" view="ville.xhtml" model="v">
 	<var name="v" class="ma.siig.domain.Ville"/>
 	<on-entry>
-		<evaluate expression="villeService.findAll()" result="flowScope.villes" />
+		<evaluate expression="villeService.findAll()" result="viewScope.villes" />
 	</on-entry>
 		<transition on="villecreate" to="villePage">
 			<evaluate expression="villeService.save(v)"/>
-			<evaluate expression="villeService.findAll()" result="flowScope.villes" />
+			<evaluate expression="villeService.findAll()" result="viewScope.villes" />
 		</transition>
 		<transition on="deleteVille" to="villePage">
-			<evaluate expression="villeService.findAll()" result="flowScope.villes" />
+			<evaluate expression="villeService.findAll()" result="viewScope.villes" />
 		</transition>
+		
 	</view-state>	
+	<!--  							 **
+									*****
+	********************************************************************************  -->
+	<view-state id="moncompte" view="moncompte.xhtml">
+	
+	</view-state>
+	
 	<!--  							 **
 									*****
 	********************************************************************************  -->
@@ -92,15 +106,15 @@
 	<view-state id="entitePage" view="entite.xhtml" model="en">
 	<var name="en" class="ma.siig.domain.Entite"/>
 	<on-entry>
-		<evaluate expression="entiteService.findAll()" result="flowScope.entites" />
-		<evaluate expression="villeService.findAll()" result="flowScope.villes" />
+		<evaluate expression="entiteService.findAll()" result="viewScope.entites" />
+		<evaluate expression="villeService.findAll()" result="viewScope.villes" />
 	</on-entry>
 		<transition on="entitecreate" to="entitePage">
 			<evaluate expression="entiteService.save(en)"/>
-			<evaluate expression="entiteService.findAll()" result="flowScope.entites"></evaluate>
+			<evaluate expression="entiteService.findAll()" result="viewScope.entites"></evaluate>
 		</transition>
 		<transition on="deleteEntite" to="entitePage">
-			<evaluate expression="entiteService.findAll()" result="flowScope.entites" />
+			<evaluate expression="entiteService.findAll()" result="viewScope.entites" />
 		</transition>
 		
 	</view-state>
@@ -110,15 +124,15 @@
 	<view-state id="utilisateurPage" view="utilisateur.xhtml" model="us">
 	<var name="us" class="ma.siig.domain.User"/>
 	<on-entry>
-		<evaluate expression="utilisateurService.findAll()" result="flowScope.users"/>
+		<evaluate expression="utilisateurService.findAll()" result="viewScope.users"/>
 	</on-entry>
 	
 		<transition on="usercreate" to="utilisateurPage">
 			<evaluate expression="utilisateurService.save(us)"/>
-			<evaluate expression="utilisateurService.findAll()" result="flowScope.users"/>
+			<evaluate expression="utilisateurService.findAll()" result="viewScope.users"/>
 		</transition>
 		<transition on="deleteUser" to="utilisateurPage">
-			<evaluate expression="utilisateurService.findAll()" result="flowScope.users"/>
+			<evaluate expression="utilisateurService.findAll()" result="viewScope.users"/>
 		</transition>
 	</view-state>
 	<!--  						 **
@@ -127,14 +141,17 @@
 	<view-state id="typepjPage" view="typePJ.xhtml" model="pj">
 	<var name="pj" class="ma.siig.domain.Typepj"/>
 	<on-entry>
-			<evaluate expression="typepjService.findAll()" result="flowScope.types"/>		
+			<evaluate expression="typepjService.findAll()" result="viewScope.types"/>		
 	</on-entry>
 		<transition on="typepjcreate" to="typepjPage">
 			<evaluate expression="typepjService.save(pj)"/>
-			<evaluate expression="typepjService.findAll()" result="flowScope.types"/>
+			<evaluate expression="typepjService.findAll()" result="viewScope.types"/>
 		</transition>
 		<transition on="deleteTypepj" to="typepjPage">
-			<evaluate expression="typepjService.findAll()" result="flowScope.types"/>
+			<evaluate expression="typepjService.findAll()" result="viewScope.types"/>
+		</transition>
+		<transition on="fresh" to="typepjPage">
+			<evaluate expression="typepjService.findAll()" result="viewScope.types"/>
 		</transition>
 	</view-state>
 	<!--  						 **
@@ -143,14 +160,17 @@
 	<view-state id="typedocPage" view="typedoc.xhtml" model="td">
 	<var name="td" class="ma.siig.domain.Typedoc"/>
 	<on-entry>
-		<evaluate expression="typedocService.findAll()" result="flowScope.typesdoc"/>
+		<evaluate expression="typedocService.findAll()" result="viewScope.typesdoc"/>
 	</on-entry>
 	
 		<transition on="typedoccreate" to="typedocPage">
 			<evaluate expression="typedocService.save(td)"/>
 		</transition>
 		<transition on="deleteDocument" to="typedocPage">
-			<evaluate expression="typedocService.findAll()" result="flowScope.typesdoc"/>
+			<evaluate expression="typedocService.findAll()" result="viewScope.typesdoc"/>
+		</transition>
+		<transition on="fresh" to="typedocPage">
+			<evaluate expression="typedocService.findAll()" result="viewScope.typesdoc"/>
 		</transition>
 	</view-state>
 	<!--  							 **
@@ -158,16 +178,19 @@
 	********************************************************************************  -->
 	<view-state id="docPage" view="document.xhtml">
 		<on-entry>
-			<evaluate expression="soustypedocService.findAll()" result="flowScope.typesdoc"/>
-			<evaluate expression="documentService.findAll()" result="flowScope.documents"/>
+			<evaluate expression="soustypedocService.findAll()" result="viewScope.typesdoc"/>
+			<evaluate expression="documentService.findAll()" result="viewScope.documents"/>
 		</on-entry>
 	
 	
 		<transition on="docreate" to="docPage">
-			<evaluate expression="documentService.findAll()" result="flowScope.documents"/>
+			<evaluate expression="documentService.findAll()" result="viewScope.documents"/>
 		</transition>
 		<transition on="deleteDocument" to="docPage">
-			<evaluate expression="documentService.findAll()" result="flowScope.documents"/>
+			<evaluate expression="documentService.findAll()" result="viewScope.documents"/>
+		</transition>
+		<transition on="fresh" to="docPage">
+			<evaluate expression="documentService.findAll()" result="viewScope.documents"/>
 		</transition>
 	</view-state>
 	
@@ -177,15 +200,18 @@
 	<view-state id="typemPage" view="typeM.xhtml" model="tm">
 	<var name="tm" class="ma.siig.domain.Typemission"/>
 	<on-entry>
-		<evaluate expression="typemissionService.findAll()" result="flowScope.typesm"/>	
+		<evaluate expression="typemissionService.findAll()" result="viewScope.typesm"/>	
 	</on-entry>
 	<transition on="backHome" to="home"/>
 		<transition on="typemcreate" to="typemPage">
 			<evaluate expression="typemissionService.save(tm)"/>	
-			<evaluate expression="typemissionService.findAll()" result="flowScope.typesm"/>	
+			<evaluate expression="typemissionService.findAll()" result="viewScope.typesm"/>	
 		</transition>
 		<transition on="deleteTypeM" to="typemPage">
-			<evaluate expression="typemissionService.findAll()" result="flowScope.typesm"/>
+			<evaluate expression="typemissionService.findAll()" result="viewScope.typesm"/>
+		</transition>
+		<transition on="fresh" to="typemPage">
+			<evaluate expression="typemissionService.findAll()" result="viewScope.typesm"/>
 		</transition>
 	</view-state>
 		<!--  							 **
@@ -203,13 +229,13 @@
 	
 	
 	<on-entry>
-		<evaluate expression="typemissionService.findAll()" result="flowScope.typesmission"/>	
-	 	<evaluate expression="entiteService.findAll()" result="flowScope.entites" /> 
-	 	<evaluate expression="villeService.findAll()" result="flowScope.villes" /> 
-		<evaluate expression="utilisateurService.findAll()" result="flowScope.users"/>
-		<evaluate expression="typepjService.findAll()" result="flowScope.types"/>
-		<evaluate expression="documentService.findAll()" result="flowScope.docs"/>
-		<evaluate expression="missionService.updateList()" result="flowScope.missions"/>
+		<evaluate expression="typemissionService.findAll()" result="viewScope.typesmission"/>	
+	 	<evaluate expression="entiteService.findAll()" result="viewScope.entites" /> 
+	 	<evaluate expression="villeService.findAll()" result="viewScope.villes" /> 
+		<evaluate expression="utilisateurService.findAll()" result="viewScope.users"/>
+		<evaluate expression="typepjService.findAll()" result="viewScope.types"/>
+		<evaluate expression="documentService.findAll()" result="viewScope.docs"/>
+		<evaluate expression="missionService.updateList()" result="viewScope.missions"/>
 		
 		
 	</on-entry>
@@ -217,7 +243,7 @@
 		<transition on="missioncreate">
 			
 			<evaluate expression="missionService.save(miss)"/>
-			<evaluate expression="missionService.findAll()" result="flowScope.missions"/>
+			<evaluate expression="missionService.findAll()" result="viewScope.missions"/>
 			
 		</transition>
 		<transition on="destinationcreate">
@@ -237,17 +263,19 @@
 	<view-state id="sstypedocPage" view="sstypedoc.xhtml" model="std">
 	<var name="std" class="ma.siig.domain.Soustypedoc"/>
 	<on-entry>
-		<evaluate expression="soustypedocService.findAll()" result="flowScope.sstypesdoc"/>
+		<evaluate expression="soustypedocService.findAll()" result="viewScope.sstypesdoc"/>
 	</on-entry>
 		
 		<transition on="sstypedoccreate" to="sstypedocPage">
 			<evaluate expression="soustypedocService.save(std)"/>
-			<evaluate expression="soustypedocService.findAll()" result="flowScope.sstypesdoc"/>
+			<evaluate expression="soustypedocService.findAll()" result="viewScope.sstypesdoc"/>
 		</transition>
 	<transition on="deleteSStypedoc" to="sstypedocPage">
-			<evaluate expression="soustypedocService.findAll()" result="flowScope.sstypesdoc"/>
+			<evaluate expression="soustypedocService.findAll()" result="viewScope.sstypesdoc"/>
 		</transition>
-	
+	<transition on="fresh" to="sstypedocPage">
+			<evaluate expression="soustypedocService.findAll()" result="viewScope.sstypesdoc"/>
+		</transition>
 	
 	</view-state>
 	
@@ -258,17 +286,19 @@
 	<view-state id="profilPage" view="profil.xhtml" model="pro">
 	<var name="pro" class="ma.siig.domain.Profil"/>
 	<on-entry>
-		<evaluate expression="profilService.findAll()" result="flowScope.profils"/>
+		<evaluate expression="profilService.findAll()" result="viewScope.profils"/>
 	</on-entry>
 		
 		<transition on="profilcreate" to="profilPage">
 			<evaluate expression="profilService.save(pro)"/>
-			<evaluate expression="profilService.findAll()" result="flowScope.profils"/>
+			<evaluate expression="profilService.findAll()" result="viewScope.profils"/>
 		</transition>
 	<transition on="deleteProfil" to="profilPage">
-			<evaluate expression="profilService.findAll()" result="flowScope.profils"/>
+			<evaluate expression="profilService.findAll()" result="viewScope.profils"/>
 		</transition>
-	
+	<transition on="fresh" to="profilPage">
+			<evaluate expression="profilService.findAll()" result="viewScope.profils"/>
+		</transition>
 	</view-state>
 	<!--  						 **
 									*****
@@ -277,14 +307,15 @@
 		<var name="ele" class="ma.siig.domain.Element"/>
 		
 		<on-entry>
-			<evaluate expression="elementService.findAll()" result="flowScope.elements"/>
-			<evaluate expression="moduleService.findAll()" result="flowsCope.modules"/>
+			<evaluate expression="elementService.findAll()" result="viewScope.elements"/>
+			<evaluate expression="moduleService.findAll()" result="viewScope.modules"/>
 		</on-entry>
 		<transition on="elementcreate" to="elementPage">
 			<evaluate expression="elementService.save(ele)"/>
 			<evaluate expression="elementService.findAll()"/>
 		</transition>
 		<transition on="deleteElemet" to="elementPage"/>
+		<transition on="fresh" to="elementPage"/>
 	</view-state>
 	<!--  							 **
 								*****
@@ -292,14 +323,15 @@
 	<view-state id="accountPage" view="account.xhtml" model="acc">
 		<var name="acc" class="ma.siig.domain.Account"/>
 		<on-entry>
-			<evaluate expression="profilService.findAll()" result="flowScope.profils"/>
-			<evaluate expression="utilisateurService.findAll()" result="flowScope.users"/>
-			<evaluate expression="accountService.findAll()" result="flowScope.accounts"/>			
+			<evaluate expression="profilService.findAll()" result="viewScope.profils"/>
+			<evaluate expression="utilisateurService.findAll()" result="viewScope.users"/>
+			<evaluate expression="accountService.findAll()" result="viewScope.accounts"/>			
 		</on-entry>
 		<transition on="accountcreate" to="accountPage">
 			<evaluate expression="accountService.save(acc)"/>
 		</transition>
 		<transition on="deleteAccount" to="accountPage"/>
+		<transition on="fresh" to="accountPage"/>
 			
 	</view-state>
 	<!--  						 **
@@ -308,15 +340,15 @@
 	<view-state id="fonctionPage" view="fonction.xhtml" model="fo">
 		<var name="fo" class="ma.siig.domain.Fonction"/>
 		<on-entry>
-			<evaluate expression="elementService.findAll()" result="flowScope.elements"/>
-			<evaluate expression="fonctionService.findAll()" result="flowScope.fonctions"/>
+			<evaluate expression="elementService.findAll()" result="viewScope.elements"/>
+			<evaluate expression="fonctionService.findAll()" result="viewScope.fonctions"/>
 		</on-entry>
 		<transition on="fonctioncreate" to="fonctionPage">
 			<evaluate expression="fonctionService.save(fo)"/>
 		</transition>
 		
 		<transition on="deleteFonction" to="fonctionPage"/>
-		
+		<transition on="fresh" to="fonctionPage"/>
 	</view-state>
 	<!--  						 **
 									*****
@@ -324,17 +356,19 @@
 	<view-state id="destinationPage" view="destination.xhtml" model="des">
 		<var name="des" class="ma.siig.domain.Destination"/>
 		<on-entry>
-			<evaluate expression="destinationService.findAll()" result="flowScope.destinations"/>
-			<evaluate expression="missionService.updateList()" result="flowScope.missions"/>
-			<evaluate expression="villeService.findAll()" result="flowScope.villes"/>
-			<evaluate expression="entiteService.findAll()" result="flowScope.entites"/>
+			<evaluate expression="destinationService.findAll()" result="viewScope.destinations"/>
+			<evaluate expression="missionService.updateList()" result="viewScope.missions"/>
+			<evaluate expression="villeService.findAll()" result="viewScope.villes"/>
+			<evaluate expression="entiteService.findAll()" result="viewScope.entites"/>
 		</on-entry>
 		<transition on="destinationcreate" to="destinationPage">
 			<evaluate expression="destinationService.save(des)"/>
-			<evaluate expression="destinationService.findAll()" result="flowScope.destinations"/>
+			<evaluate expression="destinationService.findAll()" result="viewScope.destinations"/>
 		</transition>
 		
 		<transition on="deleteDestination" to="destinationPage"/>
+		<transition on="fresh" to="destinationPage"/>
+		
 		
 	</view-state>
 	<!--  							 **
@@ -350,17 +384,18 @@
 		<var name="mod" class="ma.siig.domain.Module"/>
 		
 		<on-entry>
-			<evaluate expression="moduleService.findAll()" result="flowScope.modules"/>
+			<evaluate expression="moduleService.findAll()" result="viewScope.modules"/>
 		</on-entry>
 		
 		<transition on="modulecreate" to="modulePage">
 			<evaluate expression="moduleService.save(mod)"/>
-			<evaluate expression="moduleService.findAll()" result="flowScope.modules"/>
+			<evaluate expression="moduleService.findAll()" result="viewScope.modules"/>
 		</transition>
 			
 		<transition on="deleteModule" to="modulePage">
-			<evaluate expression="moduleService.findAll()" result="flowScope.modules"/>
-		</transition>		
+			<evaluate expression="moduleService.findAll()" result="viewScope.modules"/>
+		</transition>	
+		<transition on="fresh" to="modulePage"/>	
 	</view-state>
 	<!--  							 **
 								*****
@@ -368,18 +403,19 @@
 	<view-state id="membrePage" view="MembreEquipe.xhtml" model="mem">
 		<var name="mem" class="ma.siig.domain.Membreequipe"/>
 		<on-entry>
-			<evaluate expression="utilisateurService.findAll()" result="flowScope.users"/>
-			<evaluate expression="missionService.updateList()" result="flowScope.missions"/>
-			<evaluate expression="membreService.findAll()" result="flowScope.membres"/>
+			<evaluate expression="utilisateurService.findAll()" result="viewScope.users"/>
+			<evaluate expression="missionService.updateList()" result="viewScope.missions"/>
+			<evaluate expression="membreService.findAll()" result="viewScope.membres"/>
 		</on-entry>
 		<transition on="membrecreate" to="membrePage">
 			<evaluate expression="membreService.save(mem)"/>
-			<evaluate expression="membreService.findAll()" result="flowScope.membres"/>
+			<evaluate expression="membreService.findAll()" result="viewScope.membres"/>
 		</transition>
 			
 		<transition on="deleteMembre" to="membrePage">
-			<evaluate expression="membreService.findAll()" result="flowScope.membres"/>
+			<evaluate expression="membreService.findAll()" result="viewScope.membres"/>
 		</transition>
+		<transition on="fresh" to="membrePage"/>
 	</view-state>
 	
 	<!--  							 **
@@ -387,7 +423,7 @@
 	********************************************************************************  -->
 	<view-state id="missionConsPage" view="missionCons.xhtml">
 		<on-entry>
-			<evaluate expression="missionService.updateList()" result="flowScope.missions"/>
+			<evaluate expression="missionService.updateList()" result="viewScope.missions"/>
 		</on-entry>
 	</view-state>
 	<!--  							 **
@@ -396,17 +432,18 @@
 	<view-state id="archivesPage" view="archives.xhtml" model="do">
 		<var name="do" class="ma.siig.domain.Document"/>
 		<on-entry>
-			<evaluate expression="soustypedocService.findArchives()" result="flowScope.typesdoc"/>
-			<evaluate expression="documentService.findArchives()" result="flowScope.documents"/>
+			<evaluate expression="soustypedocService.findArchives()" result="viewScope.typesdoc"/>
+			<evaluate expression="documentService.findArchives()" result="viewScope.documents"/>
 		</on-entry>
 	
 	
 		<transition on="docreate" to="archivesPage">
-			<evaluate expression="documentService.findArchives()" result="flowScope.documents"/>
+			<evaluate expression="documentService.findArchives()" result="viewScope.documents"/>
 		</transition>
 		<transition on="deleteDocument" to="archivesPage">
-			<evaluate expression="documentService.findArchives()" result="flowScope.documents"/>
+			<evaluate expression="documentService.findArchives()" result="viewScope.documents"/>
 		</transition>
+		<transition on="fresh" to="archivesPage"/>
 	</view-state>
 	<!--  							 **
 								*****
@@ -414,17 +451,38 @@
 	<view-state id="sourcesPage" view="sources.xhtml" model="do">
 		<var name="do" class="ma.siig.domain.Document"/>
 		<on-entry>
-			<evaluate expression="soustypedocService.findSources()" result="flowScope.typesdoc"/>
-			<evaluate expression="documentService.findSources()" result="flowScope.documents"/>
+			<evaluate expression="soustypedocService.findSources()" result="viewScope.typesdoc"/>
+			<evaluate expression="documentService.findSources()" result="viewScope.documents"/>
 		</on-entry>
 	
 	
 		<transition on="docreate" to="sourcesPage">
-			<evaluate expression="documentService.findSources()" result="flowScope.documents"/>
+			<evaluate expression="documentService.findSources()" result="viewScope.documents"/>
 		</transition>
 		<transition on="deleteDocument" to="sourcesPage">
-			<evaluate expression="documentService.findSources()" result="flowScope.documents"/>
+			<evaluate expression="documentService.findSources()" result="viewScope.documents"/>
 		</transition>
+		<transition on="fresh" to="sourcesPage"/>
+	</view-state>
+	<!--  							 **
+								*****
+	********************************************************************************  -->
+	
+	<view-state id="modelesPage" view="modelesDoc.xhtml" model="do">
+		<var name="do" class="ma.siig.domain.Document"/>
+		<on-entry>
+			<evaluate expression="soustypedocService.findModeles()" result="viewScope.typesdoc"/>
+			<evaluate expression="documentService.findModeles()" result="viewScope.documents"/>
+		</on-entry>
+	
+	
+		<transition on="docreate" to="sourcesPage">
+			<evaluate expression="documentService.findModeles()" result="viewScope.documents"/>
+		</transition>
+		<transition on="deleteDocument" to="sourcesPage">
+			<evaluate expression="documentService.findModeles()" result="viewScope.documents"/>
+		</transition>
+		<transition on="fresh" to="sourcesPage"/>
 	</view-state>
 	<!--  							 **
 								*****
@@ -432,17 +490,18 @@
 	<view-state id="documentsPage" view="documents.xhtml" model="do">
 		<var name="do" class="ma.siig.domain.Document"/>
 		<on-entry>
-			<evaluate expression="soustypedocService.findOthers()" result="flowScope.typesdoc"/>
-			<evaluate expression="documentService.findOthers()" result="flowScope.documents"/>
+			<evaluate expression="soustypedocService.findOthers()" result="viewScope.typesdoc"/>
+			<evaluate expression="documentService.findOthers()" result="viewScope.documents"/>
 		</on-entry>
 	
 	
 		<transition on="docreate" to="documentsPage">
-			<evaluate expression="documentService.findOthers()" result="flowScope.documents"/>
+			<evaluate expression="documentService.findOthers()" result="viewScope.documents"/>
 		</transition>
 		<transition on="deleteDocument" to="documentsPage">
-			<evaluate expression="documentService.findOthers()" result="flowScope.documents"/>
+			<evaluate expression="documentService.findOthers()" result="viewScope.documents"/>
 		</transition>
+		<transition on="fresh" to="documentsPage"/>
 	</view-state>
 	<!--  							 **
 								*****
@@ -450,8 +509,8 @@
 	<view-state id="missionADPage" view="missionAD.xhtml" model="mi">
 		<var name="mi" class="ma.siig.domain.Mission"/>
 		<on-entry>
-			<evaluate expression="typemissionService.findAll()" result="flowScope.types"/>
-			<evaluate expression="missionService.updateList()" result="flowScope.missions"/>
+			<evaluate expression="typemissionService.findAll()" result="viewScope.types"/>
+			<evaluate expression="missionService.updateList()" result="viewScope.missions"/>
 		</on-entry>
 	
 	
@@ -459,28 +518,27 @@
 			<evaluate expression="missionService.save(mi)"/>
 		</transition>
 		<transition on="deletemission" to="missionADPage"/>
-			
+		<transition on="fresh" to="missionADPage"/>	
 	</view-state>
 	
 	<!--  							 **
 								*****
 	********************************************************************************  -->
-	<view-state id="missionpjPage" view="missionPJ.xhtml" model="pj">
-		<var name="pj" class="ma.siig.domain.Missionpj"/>
+	<view-state id="missionpjPage" view="missionPJ.xhtml">
 		<on-entry>
-			<evaluate expression="missionpjService.findAll()" result="flowScope.missionpjs"/>
-			<evaluate expression="missionService.updateList()" result="flowScope.missions"/>
-			<evaluate expression="documentService.findAll()" result="flowScope.docs"/>
-			<evaluate expression="typepjService.findAll()" result="flowScope.types"/>
+			<evaluate expression="missionpjService.findAll()" result="viewScope.missionpjs"/>
+			<evaluate expression="missionService.updateList()" result="viewScope.missions"/>
+			<evaluate expression="documentService.findAll()" result="viewScope.docs"/>
+			<evaluate expression="typepjService.findAll()" result="viewScope.types"/>
 		</on-entry>
 
 		<transition on="missionpjcreate" to="missionpjPage">
-			<evaluate expression="missionpjService.save(pj)"/>
-			<evaluate expression="missionpjService.findAll()" result="flowScope.missionpjs"/>
+			<evaluate expression="missionpjService.findAll()" result="viewScope.missionpjs"/>
 		</transition>
 		<transition on="deleteMissionpj" to="missionpjPage">
-			<evaluate expression="missionpjService.findAll()" result="flowScope.missionpjs"/>
+			<evaluate expression="missionpjService.findAll()" result="viewScope.missionpjs"/>
 		</transition>
+		<transition on="fresh" to="missionpjPage"/>
 	</view-state>
 
 	<!--  							 **

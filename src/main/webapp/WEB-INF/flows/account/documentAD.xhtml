@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	template="/WEB-INF/templates/internal.xhtml">
+	<ui:define name="title">
+		<h:outputText value="Ministère de la pêche maritime" />
+	</ui:define>
+	<ui:define name="header">
+	</ui:define>
+
+
+	<ui:define name="content">
+		<h:form id="documentForm" enctype="multipart/form-data">
+			<p:fieldset styleClass="fieldset" legend="Les documents">
+				<p:growl id="msg" showDetail="true" />
+
+				<p:dataTable var="dom" value="#{documents}" id="dataFullD"
+					paginator="true" rows="10"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					rowsPerPageTemplate="5,10,15" style="margin-bottom:20px">
+
+					<p:column headerText="Id" filterBy="#{dom.idDoc}"
+						filterMatchMode="exact">
+						<h:outputText value="#{dom.idDoc}" />
+					</p:column>
+
+
+					<p:column headerText="Type" filterBy="#{dom.soustypedoc.libelle}"
+						filterMatchMode="contains">
+
+						<h:outputText value="#{dom.soustypedoc.libelle}" />
+
+					</p:column>
+
+					<p:column headerText="Titre" filterBy="#{dom.titre}"
+						filterMatchMode="contains">
+
+						<h:outputText value="#{dom.titre}" />
+
+					</p:column>
+
+					<p:column headerText="Date d'ajout" filterBy="#{dom.dateAjout}"
+						filterMatchMode="contains">
+
+						<h:outputText value="#{dom.dateAjout}" />
+
+					</p:column>
+
+
+					<p:column headerText="Document">
+						<p:commandButton value="Télécharger" ajax="false"
+							onclick="PrimeFaces.monitorDownload(start,stop);"
+							icon="ui-icon-arrowthick-1-s">
+							<p:fileDownload
+								value="#{documentService.fileDownload(dom.idDoc)}" />
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+				<p:commandButton id="backHome" action="backHome" immediate="true"
+					icon="ui-icon-home" value="Accueil" />
+
+
+			</p:fieldset>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -134,7 +134,7 @@ public class Document implements Serializable {
 	
 
 	//bi-directional many-to-one association to Soustypedoc
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(name="idSousType")
 	public Soustypedoc getSoustypedoc() {
 		return this.soustypedoc;

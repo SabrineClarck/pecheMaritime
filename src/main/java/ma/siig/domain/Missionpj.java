@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -130,7 +131,7 @@ public class Missionpj implements Serializable{
 	
 
 	//bi-directional many-to-one association to Document
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
 	@JoinColumn(name="idDoc", nullable=false)
 	public Document getDocument() {
 		return this.document;

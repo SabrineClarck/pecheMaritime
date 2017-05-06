@@ -106,7 +106,16 @@ public class DocumentDaoImpl implements DocumentDao {
 
 	@SuppressWarnings("unchecked")
 	public List<Document> findOthers() {
-		Query qr =getEntityManager().createQuery("select d from "+Document.class.getSimpleName()+" d where d.soustypedoc.typedoc.libelle not like '%Sources%' and d.soustypedoc.typedoc.libelle not like '%Archives%'");
+		Query qr =getEntityManager().createQuery("select d from "+Document.class.getSimpleName()+" d where d.soustypedoc.typedoc.libelle not like '%Sources%' and d.soustypedoc.typedoc.libelle not like '%Archives%' and d.soustypedoc.typedoc.libelle not like '%Modèles de document%'");
+
+		return qr.getResultList();
+	}
+
+
+	
+	@SuppressWarnings("unchecked")
+	public List<Document> findModeles() {
+		Query qr =getEntityManager().createQuery("select d from "+Document.class.getSimpleName()+" d where d.soustypedoc.typedoc.libelle like '%Modèles de document%'");
 
 		return qr.getResultList();
 	}

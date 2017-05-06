@@ -5,6 +5,10 @@ package ma.siig.services.Impl;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.faces.application.FacesMessage;
@@ -174,6 +178,18 @@ public class DocumentServiceImpl implements DocumentService {
 	
 		InputStream input = getFile().getInputstream();
 		byte[] doc = IOUtils.toByteArray(input);
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date today = new Date();
+		String td = dateFormat.format(today);
+		
+		try {
+			today = dateFormat.parse(td);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		document.setDateAjout(today);
 		document.setDoc(doc);
 		document.setSoustypedoc(getSoustypedoc());
 		documentDao.save(document);
@@ -192,6 +208,7 @@ public class DocumentServiceImpl implements DocumentService {
 	public StreamedContent fileDownload(int id) throws IOException {
 		
 		byte[] barr = documentDao.downloadDocument(id);
+		
 		InputStream is = new ByteArrayInputStream(barr);
 		
 		return new DefaultStreamedContent(is);

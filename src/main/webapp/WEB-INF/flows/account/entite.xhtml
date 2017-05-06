@@ -32,14 +32,14 @@
 					<p:tooltip for="entiteVille" styleClass="tooltip" showEvent="focus"
 						hideEvent="blur" />
 
-					<p:outputLabel for="ville" value="La Ville: " />
+				<!--  	<p:outputLabel for="ville" value="La Ville: " />
 					<p:selectOneMenu id="ville" value="#{en.ville.idVille}"
 						style="text-align:left;width:150px;">
 						<f:selectItems value="#{villes}" var="c" itemLabel="#{c.intitule}"
 							itemValue="#{c.idVille}" style="text-align:left;width:150px;" />
-					<!--  	<f:converter converterId="ma.siig.ui.utils.VilleConverter"/> -->
+				
 					</p:selectOneMenu>
-					<h:outputText value=""/>
+					<h:outputText value=""/> -->
 					<p:commandButton id="submitButton" action="entitecreate"
 						update=":dataE:dataFullE,entitePanelGrid,msg,entiteForm"
 						icon="ui-icon-check" value="Enregistrer" />
@@ -74,7 +74,7 @@
 				<!--  ici dans les lignes apparaissent les noms de villes et dans la barre de recherche on recherche par l'intitule , on peut le changer pour qu'il puisse
  faire la recherche par l'id de ville-->
 
-				<p:column headerText="Ville" filterBy="#{t.ville.intitule}"
+		<!--  		<p:column headerText="Ville" filterBy="#{t.ville.intitule}"
 					filterMatchMode="contains">
 					<p:cellEditor>
 						<f:facet name="output">
@@ -88,7 +88,7 @@
 							</h:selectOneMenu>
 						</f:facet> 
 					</p:cellEditor>
-				</p:column>
+				</p:column> -->
 
 				<p:column headerText="Entité" filterBy="#{t.intitule}"
 					filterMatchMode="contains">

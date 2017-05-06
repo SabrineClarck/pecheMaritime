@@ -14,7 +14,7 @@
 
 	<ui:define name="content">
 		<h:form id="documentForm" enctype="multipart/form-data">
-			<p:fieldset styleClass="fieldset" legend="Les sources">
+			<p:fieldset styleClass="fieldset" legend="Les ressources">
 					<p:growl id="msg" showDetail="true" />
 
 
@@ -41,14 +41,8 @@
 							style="text-align:left;width:150px;" />
 					</p:selectOneMenu>
 
-<h:outputText value="" />
+					<h:outputText value="" />
 
-
-					<p:outputLabel for="effect" value="La date d'ajout: " />
-					<p:calendar id="effect" pattern="yyyy-MM-dd" styleClass="dateC" value="#{documentService.document.dateAjout}"
-						effect="fold" title="Appuyer sur le champ!" />
-					<p:tooltip for="effect" styleClass="tooltip" showEvent="focus"
-						hideEvent="blur" />
 
 					<h:panelGroup>
 						<h:outputText value="Description: " />
@@ -73,6 +67,10 @@
 					<p:commandButton id="backHome"
 						 icon="ui-icon-home" action="backHome" immediate="true"
 						value="Accueil" />
+						
+					<p:commandButton id="Actualiser" action="fresh" immediate="true"
+						icon="ui-icon-refresh" value="Actualiser" />
+					
 				</h:panelGrid>
 			</p:fieldset>
 		</h:form>

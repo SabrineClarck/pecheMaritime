@@ -26,11 +26,21 @@ public class Typedoc implements Serializable {
 	 * @param libelle
 	 * @param soustypedocs
 	 */
+    
+    
 	public Typedoc(String description, String libelle,
 			Set<Soustypedoc> soustypedocs) {
 		this.description = description;
 		this.libelle = libelle;
 		this.soustypedocs = soustypedocs;
+	}
+
+	/**
+	 * @param libelle
+	 */
+	public Typedoc(String libelle) {
+		super();
+		this.libelle = libelle;
 	}
 
 	@Id

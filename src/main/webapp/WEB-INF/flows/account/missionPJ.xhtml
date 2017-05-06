@@ -13,17 +13,16 @@
 
 
 	<ui:define name="content">
-		<h:form id="missionpjForm">
+		<h:form id="missionpjForm" enctype="multipart/form-data">
 			<p:fieldset styleClass="fieldset" legend="Les pièces jointes">
 				<p:growl id="msg" showDetail="true"/>
-
 
 				<h:panelGrid id="missionpjPanelGrid"
 					style="margin: 0 auto; margin-top: 25px; text-align: right"
 					cellspacing="8" columns="3">
 
 					<p:outputLabel for="type" value="Le type des pièces jointes: " />
-					<p:selectOneMenu id="type" value="#{pj.typepj.idType}"
+					<p:selectOneMenu id="type" value="#{missionpjService.typepj.idType}"
 						style="text-align:left;width:150px;">
 						<f:selectItems value="#{types}" var="p" itemLabel="#{p.type}"
 							itemValue="#{p.idType}" style="text-align:left;width:150px;" />
@@ -31,56 +30,48 @@
 					<h:outputText value=""/>
 					
 					<p:outputLabel for="mission" value="La mission: " />
-					<p:selectOneMenu id="mission" value="#{pj.mission.idMission}"
+					<p:selectOneMenu id="mission" value="#{missionpjService.mission.idMission}"
 						style="text-align:left;width:150px;">
 						<f:selectItems value="#{missions}" var="u" itemLabel="#{u.titre}"
 							itemValue="#{u.idMission}" style="text-align:left;width:150px;" />
 					</p:selectOneMenu>
 					<h:outputText value=""/>
 					
-					<p:outputLabel for="doc" value="Le document: " />
-					<p:selectOneMenu id="doc" value="#{pj.document.idDoc}"
-						style="text-align:left;width:150px;">
-						<f:selectItems value="#{docs}" var="u" itemLabel="#{u.titre}"
-							itemValue="#{u.idDoc}" style="text-align:left;width:150px;" />
-					</p:selectOneMenu>
-					<h:outputText value=""/>
+						<!-- the file upload   -->
+					<p:fileUpload value="#{missionpjService.file}" mode="simple" skinSimple="true"/>
+									<h:outputText value=""/>
+				
 					
 					<h:panelGroup>
 						<h:outputText value="Titre: " />
 						<h:outputText style="color:red" value="*  " />
 					</h:panelGroup>
-					<p:inputText id="titre" value="#{pj.titre}"
+					<p:inputText id="titre" value="#{missionpjService.missionpj.titre}"
 						required="true" label="titre" title="Entrez le titre!" />
 					<p:tooltip for="titre" styleClass="tooltip" showEvent="focus"
 						hideEvent="blur" />
-						
+										
 					
-					<h:panelGroup>
-						<h:outputText value="Date d'ajout:" />
-						<h:outputText style="color:red" value="*  " />
-					</h:panelGroup>
-       				 <p:calendar id="effect" styleClass="dateFM" pattern="yyyy-MM-dd" value="#{pj.dateAjout}" effect="fold" title="Appuyer sur le champ!" />	
-       				 <p:tooltip for="effect" styleClass="tooltip"
-						showEvent="focus" hideEvent="blur" />
 					
 					<h:panelGroup>
 						<h:outputText value="La description: " />
 						<h:outputText style="color:red" value="*  " />
 					</h:panelGroup>
-					<p:inputTextarea rows="6" cols="30" counter="display" maxlength="254" counterTemplate="{0} caractères restants." id="detail" value="#{pj.description}" required="true"
+					<p:inputTextarea rows="6" cols="30" counter="display" maxlength="254" counterTemplate="{0} caractères restants." id="detail" value="#{missionpjService.missionpj.description}" required="true"
 						label="detail" title="Entrez une description!" />
 						<h:outputText id="display" />
 					<p:tooltip for="detail" styleClass="tooltip"
 						showEvent="focus" hideEvent="blur" />
 					
 					
-					<p:commandButton id="submitButton" action="missionpjcreate"
+					<p:commandButton ajax="false" actionListener="#{missionpjService.upload()}" action="missionpjcreate"
 						update="msg" icon="ui-icon-check" value="Enregistrer" />
 						
 						<p:commandButton id="backHome" action="backHome" immediate="true"
 						icon="ui-icon-home" value="Accueil" />
-
+					
+					<p:commandButton id="Actualiser" action="fresh" immediate="true"
+						icon="ui-icon-refresh" value="Actualiser" />
 
 				</h:panelGrid>
 			</p:fieldset>
@@ -140,21 +131,6 @@
 					</p:cellEditor>
 				</p:column>
 				
-					<p:column headerText="Document" filterBy="#{m.document.titre}"
-					filterMatchMode="contains">
-					<p:cellEditor>
-						<f:facet name="output">
-							<h:outputText value="#{m.document.titre}" />
-						</f:facet>
-				 	<f:facet name="input">
-							<h:selectOneMenu value="#{m.document.idDoc}"
-								style="width:100%">
-								<f:selectItems value="#{docs}" var="u"
-									itemLabel="#{u.titre}" itemValue="#{u.idDoc}" />
-							</h:selectOneMenu>
-						</f:facet> 
-					</p:cellEditor>
-				</p:column>
 
 				<p:column headerText="Titre" filterBy="#{m.titre}"
 					filterMatchMode="contains">
@@ -170,14 +146,7 @@
 				
 				<p:column headerText="Date d'ajout" filterBy="#{m.dateAjout}"
 					filterMatchMode="contains">
-					<p:cellEditor>
-						<f:facet name="output">
 							<h:outputText value="#{m.dateAjout}" />
-						</f:facet>
-						<f:facet name="input">
-							<p:calendar value="#{m.dateAjout}" pattern="yyyy-MM-dd" effect="fold" />
-						</f:facet>
-					</p:cellEditor>
 				</p:column>
 
 				<p:column headerText="Description" filterBy="#{m.description}"
@@ -190,6 +159,13 @@
 							<p:inputText value="#{m.description}" />
 						</f:facet>
 					</p:cellEditor>
+				</p:column>
+				
+				<p:column headerText="Document">
+					<p:commandButton value="Télécharger" ajax="false" onclick="PrimeFaces.monitorDownload(start,stop);"
+					icon="ui-icon-arrowthick-1-s">
+						<p:fileDownload value="#{documentService.fileDownload(m.document.idDoc)}"/>
+					</p:commandButton>
 				</p:column>
 
 				<p:column style="width:40px;" headerText="Modifier">

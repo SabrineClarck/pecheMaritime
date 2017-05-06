@@ -14,6 +14,7 @@ public interface DocumentDao {
 	public List<Document> findAll();
 	public List<Document> findArchives();
 	public List<Document> findSources();
+	public List<Document> findModeles();
 	public List<Document> findOthers();
 	public void flush();
 	public byte[] downloadDocument(Integer id);

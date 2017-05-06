@@ -84,9 +84,12 @@ xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
     <filter-class>org.primefaces.webapp.filter.FileUploadFilter</filter-class>
     	<init-param>
     		<param-name>thresholdSize</param-name>
-    		<param-value>5242880000</param-value> <!-- here I added two zeros on the right, so if anything wrong happens, just remove them -->
+    		<param-value>52428800</param-value> <!-- here I added two zeros on the right, so if anything wrong happens, just remove them -->
     	</init-param>
-    
+    	<init-param>
+    		<param-name>uploadDirectory</param-name>
+    		<param-value>/Users/SabrineMac/sabrine/applications/eclipse_helios/workspace/pecheMaritime/downloadedFiles</param-value>
+    	</init-param>
 </filter>
 <filter-mapping>
     <filter-name>primeFaces FileUpload Filter</filter-name>

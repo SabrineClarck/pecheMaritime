@@ -40,6 +40,22 @@ public class Soustypedoc implements Serializable {
 	}
 
 
+	/**
+	 * @param libelle
+	 */
+	public Soustypedoc(String libelle) {
+		super();
+		this.libelle = libelle;
+	}
+
+	/**
+	 * @param typedoc
+	 */
+	public Soustypedoc(Typedoc typedoc) {
+		super();
+		this.typedoc = typedoc;
+	}
+
 	@PostConstruct
 	public void init(){
 		typedoc = new Typedoc();

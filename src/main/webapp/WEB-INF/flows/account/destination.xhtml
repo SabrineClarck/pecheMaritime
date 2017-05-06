@@ -65,7 +65,9 @@
 						
 						<p:commandButton id="backHome" action="backHome" immediate="true"
 						icon="ui-icon-home" value="Accueil" />
-
+						
+					<p:commandButton id="Actualiser" action="fresh" immediate="true"
+						icon="ui-icon-refresh" value="Actualiser" />
 
 				</h:panelGrid>
 			</p:fieldset>
@@ -80,8 +82,10 @@
 				rowsPerPageTemplate="5,10,15" editable="true"
 				style="margin-bottom:20px">
 
-				<p:ajax event="rowEdit" listener="#{destinationService.onRowEdit}"
+				<p:ajax event="rowEdit" listener="#{destinationService.onRowEdit}" process="@this fresh"
 					update=":dataD:message" />
+					<p:commandButton id="fresh" action="fresh" rendered="false"
+						 />
 				<p:ajax event="rowEditCancel"
 					listener="#{destinationService.onRowCancel}" update=":dataD:message" />
 
@@ -153,7 +157,11 @@
 				</p:column>
 
 				<p:column style="width:40px;" headerText="Modifier">
-					<p:rowEditor />
+					<p:commandLink process="@this" onclick="disable();" action="fresh">
+						<p:rowEditor>
+							 <p:ajaxStatus oncomplete="enable();" />
+						</p:rowEditor>
+					</p:commandLink>
 				</p:column>
 				
 				 <p:column style="width:40px;" headerText="Supprimer">
